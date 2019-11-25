@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>后台登录</title>
+<meta name="author" content="DeathGhost" />
+<link rel="stylesheet" href="/static/assets/css/logincss/style.css" />
+<style>
+body{height:100%;background:#16a085;overflow:hidden;}
+canvas{z-index:-1;position:absolute;}
+</style>
+<script src="/static/assets/js/jquery.js"></script>
+<script src="/static/assets/js/verificationNumbers.js"></script>
+<script src="/static/assets/js/Particleground.js"></script>
+<script>
+$(document).ready(function() {
+  //粒子背景特效
+  $('body').particleground({
+    dotColor: '#5cbdaa',
+    lineColor: '#5cbdaa'
+  });
+  //验证码
+  createCode();
+ //输入不为空才可以提交
+  $(".submit_btn").click(function(){
+
+
+   if(checkUserName()&&checkPassWord())
+      {
+       //异步请求构造json数据
+       var uaccount = document.getElementById('user_input').value;
+       var upassword = document.getElementById('pwd_input').value;
+          var inputCode = document.getElementById("J_codetext").value.toUpperCase();
+          var codeToUp=code.toUpperCase();
+          if(inputCode.length <=0) {
+           alert("输入验证码");
+           return false;
+          }
+          else if(inputCode != codeToUp ){
+           document.getElementById("J_codetext").value="";
+           alert("验证码错误");
+           createCode();
+           return false;
+          }
+          else {
+           document.getElementById("J_codetext").value="";
+            //提交ajax请求
+           document.getElementById("login_form").submit();
+           return true;
+          }
+
+      }
+
+	  });
+});
+function checkUserName(){
+  var name = document.getElementById('user_input');
+  if(name.value.length==0){
+       alert("请输入用户名");
+       name.focus();
+        return false;
+  }else{
+   return true;
+  }
+};
+function checkPassWord(){
+ var name = document.getElementById('pwd_input');
+ if(name.value.length==0){
+  alert("请输入密码");
+  name.focus();
+  return false;
+ }else{
+  return true;
+ }
+};
+
+</script>
+
+</head>
+<body>
+
+<form id="login_form" class="admin_login" action="/login/" method="POST">
+ <dt>
+  <strong>LRU数据显示系统</strong>
+  <em>Management System</em>
+ </dt>
+
+ <dd class="user_icon">
+  <input id="user_input" type="text" placeholder="账号" class="login_txtbx" name="uaccount"/>
+ </dd>
+ <dd class="pwd_icon">
+  <input id="pwd_input" type="password" placeholder="密码" class="login_txtbx" name="upassword"/>
+ </dd>
+ <dd class="val_icon">
+  <div class="checkcode">
+    <input type="text" id="J_codetext" placeholder="验证码" maxlength="4" class="login_txtbx">
+    <canvas class="J_codeimg" id="myCanvas" onclick="createCode()">对不起，您的浏览器不支持canvas，请下载最新版浏览器!</canvas>
+  </div>
+  <input type="button" value="重置验证码" class="ver_btn" onClick="createCode();">
+ </dd>
+ <dd>
+  <input type="button" value="立即登陆" class="submit_btn" />
+ </dd>
+ <dd>
+  <p>© 2019-2026 中国民航大学 版权所有</p>
+  <p>津B2-20080224-1</p>
+ </dd>
+    <script type="text/javascript">{{script}}('{{wrong}}')</script>
+</form>
+
+</dl>
+</body>
+</html>

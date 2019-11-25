@@ -1,0 +1,21 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "id": 4,
+      "name": "二级AA",
+      "type": "leaf"
+    },
+    {
+      "id": 5,
+      "name": "二级",
+      "type": "mid"
+    },
+    {
+      "id": 6,
+      "name": "二级A",
+      "type": "leaf"
+    }
+  ],
+  "msg":"success"
+}
