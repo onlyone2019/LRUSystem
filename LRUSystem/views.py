@@ -6,8 +6,16 @@ from django.contrib import messages
 
 import json
 # Create your views here.
-ip = '127.0.0.1'
 
+db_config = {
+    'host': 'localhost',
+    'port': 3306,
+    'user': 'root',
+    'passwd': 'm1358044937',
+    'db':'lru'
+}
+
+con = pymysql.connect(**db_config)
 
 def login(request):
     if request.method == "GET":
@@ -17,13 +25,11 @@ def login(request):
         # print(str(data))
         uaccount = request.POST.get('uaccount')
         upassword = request.POST.get('upassword')
-        con = pymysql.Connect(host=ip, port=3306, user='root', passwd='comeon2017', charset='utf8', db='lru2')
         cu = con.cursor(cursor=pymysql.cursors.DictCursor)
         cu.execute("select upassword from user where uaccount =" + uaccount)
         a = cu.fetchall()
         # print(str(a))
         cu.close()
-        con.close()
         if len(a) > 0:
              if a[0]['upassword'] == upassword:
                 return render(request, 'main.html')
@@ -49,7 +55,6 @@ def tabletest(request):
 
 
 def tableshow(request):
-    con = pymysql.Connect(host=ip, port=3306, user='root', passwd='comeon2017', charset='utf8', db='lru2')
     cu = con.cursor(cursor=pymysql.cursors.DictCursor)
     cu.execute(
         "SELECT * FROM `component`")
@@ -69,12 +74,10 @@ def tableshow(request):
     # print(str(a))
     # print(str(b))
     cu.close()
-    con.close()
     return render(request, 'tableshow.html', {'row_list': a,'manu_list':b,'pmodel_list':pmodel,'cpclass_list':cpclass,'componentproperty_list':componentproperty})
 
 def firstlevel(request):  #返回章节树的最顶层节点
                           #字典形式返回对应章节的id和name(优先中文名，没有则选英文名)
-    con = pymysql.Connect(host=ip, port=3306, user='root', passwd='comeon2017', charset='utf8', db='lru2')
     cu = con.cursor(cursor=pymysql.cursors.DictCursor)
     cu.execute('select DISTINCT ATA,ATA_name,ATA_name_zh from tree')
     message = cu.fetchall()
@@ -95,7 +98,6 @@ def secondlevel(request):  #返回章节树 第二级节点 如28下的28-00 28-
     ATAnum='28'
     if request.method == "GET":
         ATAnum = request.GET.get('ATAnum', default='28')
-        con = pymysql.Connect(host=ip, port=3306, user='root', passwd='comeon2017', charset='utf8', db='lru2')
         cu = con.cursor(cursor=pymysql.cursors.DictCursor)
         cu.execute('select DISTINCT child_ATA,child_ATA_name,child_ATA_name_zh from tree where ATA="%s"'%ATAnum)
         message = cu.fetchall()
@@ -117,7 +119,6 @@ def thirdlevel(request):  #返回章节树 第三级节点 如28-00下的28-00-0
     if request.method == "GET":
         child_ATAnum = request.GET.get('child_ATAnum', default='28-00')
         # print(child_ATAnum)
-        con = pymysql.Connect(host=ip, port=3306, user='root', passwd='comeon2017', charset='utf8', db='lru2')
         cu = con.cursor(cursor=pymysql.cursors.DictCursor)
         cu.execute('select DISTINCT grandson_ATA,grandson_ATA_name,grandson_ATA_name_zh from tree where child_ATA="%s"' % child_ATAnum)
         # print('select DISTINCT grandson_ATA,grandson_ATA_name,grandson_ATA_name_zh from tree where child_ATA=%s'%child_ATAnum)
