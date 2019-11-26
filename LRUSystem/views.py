@@ -11,8 +11,8 @@ db_config = {
     'host': 'localhost',
     'port': 3306,
     'user': 'root',
-    'passwd': 'm1358044937',
-    'db':'lru'
+    'passwd': 'comeon2017',
+    'db':'lru2'
 }
 
 con = pymysql.connect(**db_config)
@@ -86,6 +86,7 @@ def firstlevel(request):  #返回章节树的最顶层节点
     for i in range(0, len(message)):
         tmp = {}
         tmp['id'] = message[i]['ATA']
+        tmp['pId']='0'
         if message[i]['ATA_name_zh'] != None :
             tmp['name'] = message[i]['ATA_name_zh']
         else:
@@ -106,6 +107,7 @@ def secondlevel(request):  #返回章节树 第二级节点 如28下的28-00 28-
         for i in range(0, len(message)):
             tmp = {}
             tmp['id'] = message[i]['child_ATA']
+            tmp['pId']=ATAnum
             if message[i]['child_ATA_name_zh'] != None:
                 tmp['name'] = message[i]['child_ATA_name_zh']
             else:
@@ -128,6 +130,7 @@ def thirdlevel(request):  #返回章节树 第三级节点 如28-00下的28-00-0
         for i in range(0, len(message)):
             tmp = {}
             tmp['id'] = message[i]['grandson_ATA']
+            tmp['pId']=child_ATAnum
             if message[i]['grandson_ATA_name_zh'] != None:
                 tmp['name'] = message[i]['grandson_ATA_name_zh']
             else:
