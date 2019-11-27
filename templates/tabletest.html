@@ -54,30 +54,7 @@
 				}
 			};
 
-			var zNodes = [
-				{ id: "28", pId: "0", name: "燃油" },
-				{ id: "28-00", pId: "28", name: "FUEL - GENERAL" },
-				{ id: "28-10", pId: "28", name: "STORAGE" },
-				{ id: "28-11", pId: "28", name: "油箱" },
-				{ id: "28-12", pId: "28", name: "油箱通风系统" },
-				{ id: "28-13", pId: "28", name: "机翼油箱外部通风系统" },
-				{ id: "28-15", pId: "28", name: "油箱间输油" },
-				{ id: "28-16", pId: "28", name: "燃油循环冷却" },
-				{ id: "28-18", pId: "28", name: "油箱防引燃系统" },
-				{ id: "28-20", pId: "28", name: "油量分配" },
-				{ id: "28-21", pId: "28", name: "主燃油泵系统" },
-				{ id: "28-22", pId: "28", name: "辅助动力装置燃油系统" },
-				{ id: "28-23", pId: "28", name: "交叉输油系统" },
-				{ id: "28-24", pId: "28", name: "发动机低压燃油关闭系统" },
-				{ id: "28-25", pId: "28", name: "输油/放油系统" },
-				{ id: "28-26", pId: "28", name: "主交叉输油系统" },
-				{ id: "28-28", pId: "28", name: "额外交叉输油系统" },
-				{ id: "28-29", pId: "28", name: "辅助动力装置低压燃油关闭系统" },
-				{ id: "28-40", pId: "28", name: "指示系统" },
-				{ id: "28-42", pId: "28", name: "油量指示系统" },
-				{ id: "28-43", pId: "28", name: "手动磁力指示器" },
-				{ id: "28-46", pId: "28", name: "油箱油面高度感应系统" }
-			];
+			var zNodes = [];
 
 			var code;
 
@@ -117,15 +94,18 @@
 			}
 
 			$(document).ready(function() {
-				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-				setCheck();
-				$("#py").bind("change", setCheck);
-				$("#sy").bind("change", setCheck);
-				$("#pn").bind("change", setCheck);
-				$("#sn").bind("change", setCheck);
-				$(".ztree li span.button.switch").click(function() {
-					minejs();
-				});
+				$.get('/alllevel', data => {
+					zNodes = data;
+					$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+					setCheck();
+					$("#py").bind("change", setCheck);
+					$("#sy").bind("change", setCheck);
+					$("#pn").bind("change", setCheck);
+					$("#sn").bind("change", setCheck);
+					$(".ztree li span.button.switch").click(function() {
+						minejs();
+					});
+				})
 			});
 			function minejs() {}
 		</script>

@@ -10,9 +10,9 @@ import json
 db_config = {
     'host': 'localhost',
     'port': 3306,
-    'user': 'root',
-    'passwd': '**yourpasswd**',
-    'db':'lru2' #这里需要改成你的数据库名
+    'user': 'lru',
+    'passwd': 'lru',
+    'db':'lru' #这里需要改成你的数据库名
 }
 
 con = pymysql.connect(**db_config)
@@ -25,6 +25,7 @@ def login(request):
         # print(str(data))
         uaccount = request.POST.get('uaccount')
         upassword = request.POST.get('upassword')
+        con.ping(reconnect=True)
         cu = con.cursor(cursor=pymysql.cursors.DictCursor)
         cu.execute("select upassword from user where uaccount =" + uaccount)
         a = cu.fetchall()
@@ -55,6 +56,7 @@ def tabletest(request):
 
 
 def tableshow(request):
+    con.ping(reconnect=True)
     cu = con.cursor(cursor=pymysql.cursors.DictCursor)
     cu.execute(
         "SELECT * FROM `component`")
@@ -78,9 +80,11 @@ def tableshow(request):
 
 def firstlevel(request):  #返回章节树的最顶层节点
                           #字典形式返回对应章节的id和name(优先中文名，没有则选英文名)
+    con.ping(reconnect=True)
     cu = con.cursor(cursor=pymysql.cursors.DictCursor)
     cu.execute('select DISTINCT ATA,ATA_name,ATA_name_zh from tree')
     message = cu.fetchall()
+    cu.close()
     result = []
     i=0
     for i in range(0, len(message)):
@@ -99,9 +103,11 @@ def secondlevel(request):  #返回章节树 第二级节点 如28下的28-00 28-
     ATAnum='28'
     if request.method == "GET":
         ATAnum = request.GET.get('ATAnum', default='28')
+        con.ping(reconnect=True)
         cu = con.cursor(cursor=pymysql.cursors.DictCursor)
         cu.execute('select DISTINCT child_ATA,child_ATA_name,child_ATA_name_zh from tree where ATA="%s"'%ATAnum)
         message = cu.fetchall()
+        cu.close()
         result = []
         i = 0
         for i in range(0, len(message)):
@@ -121,10 +127,12 @@ def thirdlevel(request):  #返回章节树 第三级节点 如28-00下的28-00-0
     if request.method == "GET":
         child_ATAnum = request.GET.get('child_ATAnum', default='28-00')
         # print(child_ATAnum)
+        con.ping(reconnect=True)
         cu = con.cursor(cursor=pymysql.cursors.DictCursor)
         cu.execute('select DISTINCT grandson_ATA,grandson_ATA_name,grandson_ATA_name_zh from tree where child_ATA="%s"' % child_ATAnum)
         # print('select DISTINCT grandson_ATA,grandson_ATA_name,grandson_ATA_name_zh from tree where child_ATA=%s'%child_ATAnum)
         message = cu.fetchall()
+        cu.close()
         result = []
         i = 0
         for i in range(0, len(message)):
@@ -140,9 +148,11 @@ def thirdlevel(request):  #返回章节树 第三级节点 如28-00下的28-00-0
     return JsonResponse(result,safe=False,json_dumps_params={'ensure_ascii':False})
 
 def alllevel(request):  #返回整棵树内容
+    con.ping(reconnect=True)
     cu = con.cursor(cursor=pymysql.cursors.DictCursor)
     cu.execute('select DISTINCT child_ATA,child_ATA_name,child_ATA_name_zh from tree where ATA="28"')
     message = cu.fetchall()
+    cu.close()
     result = []
     second=[]
     i = 0
