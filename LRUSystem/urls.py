@@ -26,4 +26,5 @@ urlpatterns = [
     path('firstlevel/', views.firstlevel),
     path('secondlevel', views.secondlevel),
     path('thirdlevel',views.thirdlevel),
+    path('alllevel',views.alllevel)
 ]
