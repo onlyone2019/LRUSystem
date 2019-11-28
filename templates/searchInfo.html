@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>信息查询</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<!-- <link rel="stylesheet" href="css/demo.css" type="text/css"> -->
+		<link
+			rel="stylesheet"
+			href="/static/tree/css/zTreeStyle/zTreeStyle.css"
+			type="text/css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/static/tree/css/zTreeStyle/animate.css"
+			type="text/css"
+		/>
+		<script
+			type="text/javascript"
+			src="/static/tree/js/jquery-1.4.4.min.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="/static/tree/js/jquery.ztree.core.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="/static/tree/js/jquery.ztree.excheck.js"
+		></script>
+		<!--
+<script type="text/javascript" src="js/jquery.ztree.exedit.js"></script>
+-->
+		<script type="text/javascript">
+			var setting = {
+				treeObj: null,
+				check: {
+					enable: false
+				},
+				data: {
+					simpleData: {
+						enable: true,
+						idKey: "id",
+						pIdKey: "pId",
+						rootPId: -1
+					}
+				},
+				callback: {
+				    beforeClick:zTreeBeforeClick,
+                    onclick:zTreeOnClick,
+				},
+				view: {
+					showLine: false,
+					showIcon: false,
+					showTitle: false
+					// fontCss : {color:"red"}
+				}
+			};
+
+			var zNodes = [];
+
+			var code;
+
+
+
+
+			function zTreeBeforeClick(treeId, treeNode, clickFlag) {
+			    if (treeNode.isParent) {
+				return false;
+			} else {
+
+				return true;
+			}
+            };
+            function zTreeOnClick(event, treeId, treeNode) {
+                alert(treeNode.tId + ", " + treeNode.name);
+            };
+
+			$(document).ready(function() {
+				$.get('/searchInfoforTree', data => {
+					zNodes = data;
+                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+				})
+
+			});
+		</script>
+	</head>
+	<style>
+		.tabbox {
+			width: 900px;
+			margin: 10% auto;
+			padding: 15px;
+			height: 600px;
+			background: white;
+			display: none;
+		}
+		.tabbox li,
+		.tabbox ul {
+			list-style-type: none;
+		}
+		.tabbox ul {
+			margin: 0;
+			padding: 0;
+		}
+		.tabbox .tabnav,
+		.tabbox .tabcon {
+			width: 98%;
+			display: block;
+			float: left;
+		}
+		.tabbox .tabnav {
+			border-bottom: 1px solid #ddd;
+		}
+		.tabbox .tabnav li {
+			position: relative;
+			cursor: pointer;
+			float: left;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			margin: 0px;
+			padding: 8px 26px;
+			color: #337ab7;
+			border: 1px solid #fff;
+		}
+		.tabnav li.active {
+			border: 1px solid #ddd;
+			border-bottom: none;
+			color: #555;
+		}
+		.tabnav li.active:before {
+			content: "";
+			width: 100%;
+			height: 1px;
+			bottom: -2px;
+			left: 0;
+			position: absolute;
+			background: white;
+		}
+		.tabbox .tabcon li {
+			display: none;
+			padding: 10px;
+			width: 100%;
+			height: 540px;
+			overflow: auto;
+		}
+		.tabbox .tabcon li:first-child {
+			display: block;
+		}
+		.mask {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgb(212, 212, 212);
+			display: none;
+		}
+	</style>
+	<body>
+    <div class="content_wrap" style="float: left;">
+			            <div class="zTreeDemoBackground left">
+				            <ul id="treeDemo" class="ztree"></ul>
+				<!-- <ul id="selectObj"></ul> -->
+			            </div>
+    </div>
+      <div style="height: 300px;overflow-x: auto;float: left;">
+               <table>
+                   <thead>
+                                <tr>
+                                    <th>PNR</th>
+                                    <th>ATA</th>
+                                    <th>MTBUR</th>
+                                    <th>SPC</th>
+                                </tr>
+                   </thead>
+                   <tbody>
+                                    {% for row in row_list %}
+                                    <tr>
+                                        <td>{{ row.PNR }}</td>
+                                        <td>{{ row.ATA }}</td>
+                                        <td>{{ row.MTBUR }}</td>
+                                        <td>{{ row.SPC }}</td>
+                                    </tr>
+                                    {% endfor %}
+                   </tbody>
+               </table>
+           </div>
+
+
+
+
+	</body>
+
+
+
+</html>
