@@ -26,5 +26,7 @@ urlpatterns = [
     path('firstlevel/', views.firstlevel),
     path('secondlevel', views.secondlevel),
     path('thirdlevel',views.thirdlevel),
-    path('alllevel',views.alllevel)
+    path('alllevel',views.alllevel),
+    path('searchInfo/',views.searchInfo),
+    path('searchInfoforTree/',views.searchInfoforTree),
 ]

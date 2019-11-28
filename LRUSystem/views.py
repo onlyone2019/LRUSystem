@@ -10,9 +10,9 @@ import json
 db_config = {
     'host': 'localhost',
     'port': 3306,
-    'user': 'lru',
-    'passwd': 'lru',
-    'db':'lru' #这里需要改成你的数据库名
+    'user': 'root',
+    'passwd': 'wangjin',
+    'db':'lru2' #这里需要改成你的数据库名
 }
 
 con = pymysql.connect(**db_config)
@@ -185,3 +185,87 @@ def alllevel(request):  #返回整棵树内容
             # print(tmp)
             result.append(tmp.copy())
     return JsonResponse(result,safe=False,json_dumps_params={'ensure_ascii':False})
+
+
+
+def alllevel(request):  #返回整棵树内容
+    con.ping(reconnect=True)
+    cu = con.cursor(cursor=pymysql.cursors.DictCursor)
+    cu.execute('select DISTINCT child_ATA,child_ATA_name,child_ATA_name_zh from tree where ATA="28"')
+    message = cu.fetchall()
+    cu.close()
+    result = []
+    second=[]
+    i = 0
+    tmp = {}
+    tmp['id'] = '28'
+    tmp['pId'] = '0'
+    tmp['name'] = '燃油'
+    result.append(tmp.copy())
+    for i in range(0, len(message)):
+        tmp['id'] = message[i]['child_ATA']
+        tmp['pId']='28'
+        if message[i]['child_ATA_name_zh'] != None:
+            tmp['name'] = message[i]['child_ATA_name_zh']
+        else:
+            tmp['name'] = message[i]['child_ATA_name']
+        second.append(message[i]['child_ATA'])
+        result.append(tmp.copy())
+    for i in range(0, len(second)):
+        cu = con.cursor(cursor=pymysql.cursors.DictCursor)
+        cu.execute('select DISTINCT grandson_ATA,grandson_ATA_name,grandson_ATA_name_zh from tree where child_ATA="%s"' % second[i])
+        message = cu.fetchall()
+        for j in range(0, len(message)):
+            tmp = {}
+            tmp['id'] = message[j]['grandson_ATA']
+            tmp['pId']=second[i]
+            if message[j]['grandson_ATA_name_zh'] != None:
+                tmp['name'] = message[j]['grandson_ATA_name_zh']
+            else:
+                tmp['name'] = message[j]['grandson_ATA_name']
+            # print(tmp)
+            result.append(tmp.copy())
+    return JsonResponse(result,safe=False,json_dumps_params={'ensure_ascii':False})
+
+
+def searchInfoforTree(request):  #返回整棵树内容
+    con.ping(reconnect=True)
+    cu = con.cursor(cursor=pymysql.cursors.DictCursor)
+    cu.execute('SELECT DISTINCT Mername from manufacturer')
+    #cu.execute('create or REPLACE view combine(mername,pmodel,pnr) as select manufacturer.Mername as a,pmodel.PModelname as b,apply.prn as c from  pmodel INNER join manufacturer on pmodel.Mername = manufacturer.Mername inner join apply on pmodel.PModelname = apply.PModelname')
+    #con.commit()
+   # cu.execute('SELECT DISTINCT mername,pmodel,ata from combine inner join component on combine.pnr=component.PNR')
+    message = cu.fetchall()
+    cu.close()
+    result = []
+    second=[]
+    thrid=[]
+    i = 0
+    tmp = {}
+    for i in range(0, len(message)):
+        tmp['id'] = i
+        tmp['pId']='-1'
+        tmp['name'] = message[i]['Mername']
+        second.append(message[i]['Mername'])
+        result.append(tmp.copy())
+    for i in range(0, len(second)):
+        cu = con.cursor(cursor=pymysql.cursors.DictCursor)
+        cu.execute('SELECT DISTINCT PModelname from pmodel where Mername="%s"' % second[i])
+        second_name = cu.fetchall()
+        for j in range(0, len(second_name)):
+            tmp['id'] = str(i)+"-"+str(j)
+            tmp['pId']= i
+            tmp['name'] = second_name[j]['PModelname']
+            result.append(tmp.copy())
+            cu.execute('SELECT DISTINCT ATA from apply INNER JOIN component on apply.prn=component.PNR where apply.PModelname="%s"' % second_name[j]['PModelname'])
+            thrid_name = cu.fetchall()
+            for k in range(0, len(thrid_name)):
+                tmp['id'] = str(i) + "-" + str(j)+"-"+str(k)
+                tmp['pId'] = str(i)+"-"+str(j)
+                tmp['name'] = thrid_name[k]['ATA']
+                result.append(tmp.copy())
+    return JsonResponse(result,safe=False,json_dumps_params={'ensure_ascii':False})
+
+
+def searchInfo(request):
+    return render(request, 'searchInfo.html')
