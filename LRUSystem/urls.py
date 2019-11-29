@@ -13,20 +13,38 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
 from LRUSystem import views
+from src.viewscode import viewsSearchInfo, viewsLogin, viewsMain, viewsAnalysis, viewsStructureTree, viewsBasicTableShow
+
 urlpatterns = [
-    path('login/', views.login),
-    path('main/', views.main),
-    path('chart/', views.chart),
-    path('table/', views.table),
-    path('tableshow/', views.tableshow),
-    path('tableshow1/', views.tabletest),
-    path('firstlevel/', views.firstlevel),
-    path('secondlevel', views.secondlevel),
-    path('thirdlevel',views.thirdlevel),
-    path('alllevel',views.alllevel),
-    path('searchInfo/',views.searchInfo),
-    path('searchInfoforTree/',views.searchInfoforTree),
+    #登陆界面
+    path('login/', viewsLogin.login),
+    #主界面
+    path('main/', viewsMain.main),
+    #分析界面
+    path('chart/', viewsAnalysis.chart),
+    #Pnr具体信息查找页面
+    path('tableSearch/', viewsSearchInfo.searchInfo), #数据查找界面
+    path('getPnrs/', viewsSearchInfo.getPnrs), #获取Pnrs信息
+    path('getATAs/', viewsSearchInfo.getAtA), #获取ATA信息
+
+    #结构树状图展示界面
+    path('structureTree/', viewsStructureTree.structureTree),
+    path('alllevel',viewsStructureTree.alllevel),
+
+    #数据库表基本展示界面
+    path('tableShow/', viewsBasicTableShow.tableshow),
+
+
+
+
+
+    #暂时无用
+    #
+    #path('firstlevel/', views.firstlevel),
+    #path('secondlevel', views.secondlevel),
+    #path('thirdlevel',views.thirdlevel),
+    #path('searchInfo/',views.searchInfo),
+    #path('searchInfoforTree/',views.searchInfoforTree),
 ]

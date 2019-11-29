@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Nixon : Flot Chart</title>
+
+    <!-- ================= Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+
+    <!-- Styles -->
+    <link href="/static/assets/fontAwesome/css/fontawesome-all.min.css" rel="stylesheet">
+    <link href="/static/assets/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="/static/assets/css/lib/mmc-chat.css" rel="stylesheet" />
+    <link href="/static/assets/css/lib/sidebar.css" rel="stylesheet">
+    <link href="/static/assets/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/assets/css/lib/nixon.css" rel="stylesheet">
+    <link href="/static/assets/css/style.css" rel="stylesheet">
+
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
+    <div class="nano">
+        <div class="nano-content">
+            <ul>
+                <li class="active">
+                    <a class="sidebar-sub-toggle"><i class="ti-home"></i> 总览 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <ul>
+                        <li><a href="/main/">Dashboard 1</a></li>
+
+                    </ul>
+                </li>
+
+
+
+
+
+                <li>
+                    <a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i>  报表分析  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <ul>
+                        <li><a href="/chart/">Flot</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a class="sidebar-sub-toggle"><i class="ti-layout-grid4-alt"></i> 信息查询 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <ul>
+
+                        <li><a href="/tableSearch/">信息查询</a></li>
+                        <li><a href="/tableShow/">信息概览</a></li>
+                        <li><a href="/structureTree/">结构总览</a></li>
+                    </ul>
+                </li>
+                <li><a><i class="ti-close"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</div><!-- /# sidebar -->
+
+
+
+
+<div class="header">
+    <div class="pull-left">
+        <div class="logo">
+            <a href="/main/">
+                <img id="logoImg"
+                     src="/static/logo/logo.png"
+                     data-logo_big="/static/logo/logo.png"
+                     data-logo_small="/static/logo/logoSmall.png"
+                     alt="Nixon" />
+            </a>
+        </div>
+        <div class="hamburger sidebar-toggle">
+            <span class="ti-menu"></span>
+        </div>
+    </div>
+
+    <div class="pull-right p-r-15">
+        <ul>
+            <li class="header-icon dib"><i class="ti-bell"></i>
+                <div class="drop-down">
+                    <div class="dropdown-content-heading">
+                        <span class="text-left">Recent Notifications</span>
+                    </div>
+                    <div class="dropdown-content-body">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/3.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Mr. Jane</div>
+                                        <div class="notification-text">5 members joined today </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/3.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Mariam</div>
+                                        <div class="notification-text">likes a photo of you</div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/3.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Tasnim</div>
+                                        <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/3.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Jane Roe</div>
+                                        <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="text-center">
+                                <a href="#" class="more-link">See All</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="header-icon dib"><i class="ti-email"></i>
+                <div class="drop-down">
+                    <div class="dropdown-content-heading">
+                        <span class="text-left">2 New Messages</span>
+                        <a href="app-email.html"><i class="ti-pencil-alt pull-right"></i></a>
+                    </div>
+                    <div class="dropdown-content-body">
+                        <ul>
+                            <li class="notification-unread">
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/1.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Jane Doe</div>
+                                        <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="notification-unread">
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/2.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Jane Roe</div>
+                                        <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/3.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Jane Doe</div>
+                                        <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <img class="pull-left m-r-10 avatar-img" src="/static/assets/images/avatar/2.jpg" alt="" />
+                                    <div class="notification-content">
+                                        <small class="notification-timestamp pull-right">02:34 PM</small>
+                                        <div class="notification-heading">Jane Roe</div>
+                                        <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="text-center">
+                                <a href="#" class="more-link">See All</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="header-icon dib chat-sidebar-icon"><i class="ti-comments"></i></li>
+            <li class="header-icon dib"><img class="avatar-img" src="/static/assets/images/avatar/1.jpg" alt="" /> <span class="user-avatar">Jane <i class="ti-angle-down f-s-10"></i></span>
+                <div class="drop-down dropdown-profile">
+                    <div class="dropdown-content-heading">
+                        <span class="text-left">Upgrade Now</span>
+                        <p class="trial-day">30 Days Trail</p>
+                    </div>
+                    <div class="dropdown-content-body">
+                        <ul>
+                            <li><a href="#"><i class="ti-user"></i> <span>Profile</span></a></li>
+                            <li><a href="#"><i class="ti-wallet"></i> <span>My Balance</span></a></li>
+                            <li><a href="#"><i class="ti-write"></i> <span>My Task</span></a></li>
+                            <li><a href="#"><i class="ti-calendar"></i> <span>My Calender</span></a></li>
+                            <li><a href="#"><i class="ti-email"></i> <span>Inbox</span></a></li>
+                            <li><a href="#"><i class="ti-settings"></i> <span>Setting</span></a></li>
+                            <li><a href="#"><i class="ti-help-alt"></i> <span>Help</span></a></li>
+                            <li><a href="#"><i class="ti-lock"></i> <span>Lock Screen</span></a></li>
+                            <li><a href="#"><i class="ti-power-off"></i> <span>Logout</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="chat-sidebar">
+    <!-- BEGIN chat -->
+    <div id="mmc-chat" class="color-default">
+        <!-- BEGIN CHAT BOX -->
+        <div class="chat-box">
+            <!-- BEGIN CHAT BOXS -->
+            <ul class="boxs"></ul>
+            <!-- END CHAT BOXS -->
+            <div class="icons-set">
+                <div class="stickers">
+                    <div class="had-container">
+                        <div class="row">
+                            <div class="s12">
+                                <ul class="tabs" style="width: 100%;height: 60px;">
+                                    <li class="tab col s3">
+                                        <a href="#tab1" class="active">
+                                            <img src="/static/assets/images/avatar/1.jpg" alt="" />
+                                        </a>
+                                    </li>
+                                    <li class="tab col s3"><a href="#tab2">Test 2</a></li>
+                                </ul>
+                            </div>
+                            <div id="tab1" class="s12 tab-content">
+                                <ul>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                    <li> <img src="/static/assets/images/avatar/1.jpg" alt="" /></li>
+                                </ul>
+                            </div>
+                            <div id="tab2" class="s12 tab-content">Test 2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END CHAT BOX -->
+        <!-- BEGIN SIDEBAR -->
+        <div id="sidebar" class="right scroll">
+            <div class="had-container">
+                <!-- BEGIN USERS -->
+                <div class="users">
+
+                    <ul class="user-list">
+                        <!-- BEGIN USER-->
+                        <li class="user-tooltip" data-id="1" data-status="online" data-username="Rufat Askerov" data-position="left" data-filter-item data-filter-name="rufat askerov">
+                            <!-- BEGIN USER IMAGE-->
+                            <div class="user-image">
+                                <img src="/static/assets/images/avatar/1.jpg" class="avatar" alt="Rufat Askerov" />
+                            </div>
+                            <!-- END USER IMAGE-->
+                            <!-- BEGIN USERNAME-->
+                            <span class="user-name">Rufat Askerov</span>
+                            <span class="user-show"></span>
+                            <!-- END USERNAME-->
+                        </li>
+                        <!-- END USER-->
+                        <!-- BEGIN USER-->
+                        <li class="user-tooltip" data-id="3" data-status="online" data-username="Alice" data-position="left" data-filter-item data-filter-name="alice">
+                            <div class="user-image">
+                                <img src="/static/assets/images/avatar/1.jpg" class="avatar" alt="Alice" />
+                            </div>
+                            <span class="user-name">Alice</span>
+                            <span class="user-show"></span>
+                        </li>
+
+                        <!-- BEGIN USER-->
+                        <li class="user-tooltip" data-id="7" data-status="offline" data-username="Michael Scofield" data-position="left" data-filter-item data-filter-name="michael scofield">
+                            <div class="user-image">
+                                <img src="/static/assets/images/avatar/1.jpg" class="avatar" alt="Michael Scofield" />
+                            </div>
+                            <span class="user-name">Michael Scofield</span>
+                            <span class="user-show"></span>
+                        </li>
+
+                        <!-- BEGIN USER-->
+                        <li class="user-tooltip" data-id="5" data-status="online" data-username="Irina Shayk" data-position="left" data-filter-item data-filter-name="irina shayk">
+                            <div class="user-image">
+                                <img src="/static/assets/images/avatar/1.jpg" class="avatar" alt="Irina Shayk" />
+                            </div>
+                            <span class="user-name">Irina Shayk</span>
+                            <span class="user-show"></span>
+                        </li>
+
+                        <!-- BEGIN USER-->
+                        <li class="user-tooltip" data-id="6" data-status="offline" data-username="Sara Tancredi" data-position="left" data-filter-item data-filter-name="sara tancredi">
+                            <div class="user-image">
+                                <img src="/static/assets/images/avatar/1.jpg" class="avatar" alt="Sara Tancredi" />
+                            </div>
+                            <span class="user-name">Sara Tancredi</span>
+                            <span class="user-show"></span>
+                        </li>
+
+                        <!-- BEGIN USER-->
+                        <li class="user-tooltip" data-id="7" data-status="offline" data-username="Jane" data-position="left" data-filter-item data-filter-name="Jane">
+                            <div class="user-image">
+                                <img src="/static/assets/images/avatar/1.jpg" class="avatar" alt="Jane" />
+                            </div>
+                            <span class="user-name">Jane</span>
+                            <span class="user-show"></span>
+                        </li>
+                    </ul>
+                    <div class="chat-user-search">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ti-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Search"  data-search />
+                        </div>
+                    </div>
+                </div>
+                <!-- END USERS -->
+
+            </div>
+        </div>
+        <!-- END SIDEBAR -->
+    </div>
+    <!-- END chat -->
+</div>
+<!-- END chat Sidebar-->
+
+
+<div class="content-wrap">
+    <div class="main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8 p-0">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h1>Dashboard 1</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 p-0">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li><a href="#">Dashboard</a></li>
+                                <li class="active">Chart</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                <h4>Pie Chart</h4>
+                            </div>
+                            <div class="flot-container">
+                                <div id="flot-pie" class="flot-pie-container"></div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                <h4>Line Chart</h4>
+                            </div>
+                            <div class="flot-container">
+                                <div id="chart1" style="width:100%;height:275px;"></div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+                </div><!-- /# row -->
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                <h4>Bar Chart</h4>
+                            </div>
+                            <div class="flot-container">
+                                <div id="flotBar" style="width:100%;height:275px;"></div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                <h4>Curve Line</h4>
+                            </div>
+                            <div class="flot-container">
+                                <div id="flotCurve" style="width:100%;height:275px;"></div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+                </div><!-- /# row -->     </div>
+            <!-- /# main content -->Copyright &copy; 2019.Company name All rights reserved.中国民航大学;</a>
+        </div><!-- /# container-fluid -->
+    </div><!-- /# main -->
+</div><!-- /# content wrap -->
+
+
+
+
+
+
+
+<script src="/static/assets/js/lib/jquery.min.js"></script><!-- jquery vendor -->
+<script src="/static/assets/js/lib/jquery.nanoscroller.min.js"></script><!-- nano scroller -->
+<script src="/static/assets/js/lib/sidebar.js"></script><!-- sidebar -->
+<script src="/static/assets/js/lib/bootstrap.min.js"></script><!-- bootstrap -->
+<script src="/static/assets/js/lib/mmc-common.js"></script>
+<script src="/static/assets/js/lib/mmc-chat.js"></script>
+<!--  flot-chart js -->
+<script src="/static/assets/js/lib/flot-chart/excanvas.min.js"></script>
+<script src="/static/assets/js/lib/flot-chart/jquery.flot.js"></script>
+<script src="/static/assets/js/lib/flot-chart/jquery.flot.pie.js"></script>
+<script src="/static/assets/js/lib/flot-chart/jquery.flot.time.js"></script>
+<script src="/static/assets/js/lib/flot-chart/jquery.flot.stack.js"></script>
+<script src="/static/assets/js/lib/flot-chart/jquery.flot.resize.js"></script>
+<script src="/static/assets/js/lib/flot-chart/jquery.flot.crosshair.js"></script>
+<script src="/static/assets/js/lib/flot-chart/curvedLines.js"></script>
+<script src="/static/assets/js/lib/flot-chart/flot-tooltip/jquery.flot.tooltip.min.js"></script>
+<script src="/static/assets/js/lib/flot-chart/flot-chart-init.js"></script>
+<!-- // flot-chart js -->
+<script src="/static/assets/js/scripts.js"></script><!-- scripit init-->
+
+
+</body>
+
+</html>
