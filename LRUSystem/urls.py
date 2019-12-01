@@ -27,7 +27,12 @@ urlpatterns = [
     #Pnr具体信息查找页面
     path('tableSearch/', viewsSearchInfo.searchInfo), #数据查找界面
     path('getPnrs/', viewsSearchInfo.getPnrs), #获取Pnrs信息
-    path('getATAs/', viewsSearchInfo.getAtA), #获取ATA信息
+    path('getManuPmodelATAs/', viewsSearchInfo.getManuPmodelATA), #获取ATA\制造商\机型信息
+    path('getAdvancePnrs/', viewsSearchInfo.getAdvancePnrs), #高级信息获取pnrs
+    path('getAllPnrs/', viewsSearchInfo.getAllPnrs), #高级信息获取pnrs
+    path('getPropertysaAndClass/', viewsSearchInfo.getPropertysaAndClass), #高级信息获取pnrs
+    path('getClassPropertys/', viewsSearchInfo.getClassProperty), #高级信息获取pnrs
+
 
     #结构树状图展示界面
     path('structureTree/', viewsStructureTree.structureTree),
