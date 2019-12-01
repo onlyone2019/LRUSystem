@@ -17,7 +17,38 @@ from src.model.SingleConnection import MySQLSingle
 
 
 def structureTree(request):
-    return render(request, 'structureTree.html')
+    mysql_single, cu = MySQLSingle().getConCu()
+    cu.execute('SELECT DISTINCT Mername from manufacturer')
+    fist_res = cu.fetchall()
+    result =[]
+    fist_node = {}
+    second_node = {}
+    thrid_node = {}
+    for i in range(0, len(fist_res)):
+        fist_node['id'] = fist_res[i]['Mername']
+        fist_node['pId'] = '-1'
+        fist_node['name'] = fist_res[i]['Mername']
+        fist_node['child'] =[]
+        cu.execute('SELECT DISTINCT PModelname from pmodel where Mername="%s"' % fist_res[i]['Mername'])
+        second_res = cu.fetchall()
+        for j in range(0, len(second_res)):
+            cu.execute(
+                'SELECT DISTINCT ATA from apply INNER JOIN component on apply.prn=component.PNR where apply.PModelname="%s"' %
+                second_res[j]['PModelname'])
+            thrid_res = cu.fetchall()
+            second_node['id'] = fist_res[i]['Mername'] + "-" + second_res[j]['PModelname']
+            second_node['pId'] = fist_res[i]['Mername']
+            second_node['name'] = second_res[j]['PModelname']
+            second_node['child'] = []
+
+            for k in range(0, len(thrid_res)):
+                thrid_node['id'] = fist_res[i]['Mername'] + "-" + second_res[j]['PModelname'] + "-" + thrid_res[k]['ATA']
+                thrid_node['pId'] = fist_res[i]['Mername'] + "-" + second_res[j]['PModelname']
+                thrid_node['name'] = thrid_res[k]['ATA']
+                second_node['child'].append(thrid_node.copy())
+            fist_node['child'].append(second_node.copy())
+        result.append(fist_node.copy())
+    return render(request, 'structureTree.html', {'node_list':result})
 
 
 def alllevel(request):  #返回整棵树内容

@@ -1,212 +1,665 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>jQuery纵向排列树形图菜单代码 - 站长素材</title>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<!-- <link rel="stylesheet" href="css/demo.css" type="text/css"> -->
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>StructureTree</title>
+		<!-- ================= Favicon ================== -->
+		<!-- Standard -->
+		<link rel="shortcut icon" href="http://placehold.it/64.png/000/fff" />
+		<!-- Retina iPad Touch Icon-->
 		<link
-			rel="stylesheet"
-			href="/static/tree/css/zTreeStyle/zTreeStyle.css"
-			type="text/css"
+			rel="apple-touch-icon"
+			sizes="144x144"
+			href="http://placehold.it/144.png/000/fff"
 		/>
+		<!-- Retina iPhone Touch Icon-->
 		<link
-			rel="stylesheet"
-			href="/static/tree/css/zTreeStyle/animate.css"
-			type="text/css"
+			rel="apple-touch-icon"
+			sizes="114x114"
+			href="http://placehold.it/114.png/000/fff"
 		/>
-		<script
-			type="text/javascript"
-			src="/static/tree/js/jquery-1.4.4.min.js"
-		></script>
-		<script
-			type="text/javascript"
-			src="/static/tree/js/jquery.ztree.core.js"
-		></script>
-		<script
-			type="text/javascript"
-			src="/static/tree/js/jquery.ztree.excheck.js"
-		></script>
-		<!--
-<script type="text/javascript" src="js/jquery.ztree.exedit.js"></script>
--->
-		<script type="text/javascript">
-			var setting = {
-				treeObj: null,
-				check: {
-					enable: true
-				},
-				data: {
-					simpleData: {
-						enable: true,
-						idKey: "id",
-						pIdKey: "pId",
-						rootPId: 0
-					}
-				},
-				callback: {
-					onCheck: zTreeOnCheck
-				},
-				view: {
-					showLine: false,
-					showIcon: false,
-					showTitle: false
-					// fontCss : {color:"red"}
-				}
-			};
+		<!-- Standard iPad Touch Icon-->
+		<link
+			rel="apple-touch-icon"
+			sizes="72x72"
+			href="http://placehold.it/72.png/000/fff"
+		/>
+		<!-- Standard iPhone Touch Icon-->
+		<link
+			rel="apple-touch-icon"
+			sizes="57x57"
+			href="http://placehold.it/57.png/000/fff"
+		/>
+		<!-- Styles -->
+		<link
+			href="/static/assets/fontAwesome/css/fontawesome-all.min.css"
+			rel="stylesheet"
+		/>
+		<link href="/static/assets/css/lib/themify-icons.css" rel="stylesheet" />
+		<link href="/static/assets/css/lib/mmc-chat.css" rel="stylesheet" />
+		<link href="/static/assets/css/lib/sidebar.css" rel="stylesheet" />
+		<link href="/static/assets/css/lib/bootstrap.min.css" rel="stylesheet" />
+		<link href="/static/assets/css/lib/nixon.css" rel="stylesheet" />
+		<link
+			href="/static/assets/lib/lobipanel/css/lobipanel.min.css"
+			rel="stylesheet"
+		/>
+		<link href="/static/assets/css/style.css" rel="stylesheet" />
+		<!-- <link rel="stylesheet" href="/static/vue/css/element-ui.css" /> -->
+		<!--树形菜单-->
+		<link href="/static/assets/css/font-awesome.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="/static/assets/js/LuTree.js"></script>
+		<script type="text/javascript" src="/static/own_js/jsformain.js"></script>
 
-			var zNodes = [];
-
-			var code;
-
-			function setCheck() {
-				var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
-					type = { Y: "ps", N: "ps" };
-				zTree.setting.check.chkboxType = type;
-				zTree.expandAll(true); //全部展开
-				showCode(
-					'setting.check.chkboxType = { "Y" : "' +
-						type.Y +
-						'", "N" : "' +
-						type.N +
-						'" };'
-				);
-				minejs();
-			}
-			function showCode(str) {
-				if (!code) code = $("#code");
-				code.empty();
-				code.append("<li>" + str + "</li>");
-			}
-
-			function zTreeOnCheck(event, treeId, treeNode) {
-				getSelectedNodes();
-				//当前被选中对象携带参数
-				// console.log(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
-			}
-
-			function getSelectedNodes() {
-				// var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-				// var selectedNode = zTree.getCheckedNodes();
-
-				// 获取当前被勾选的节点集合
-				var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-				var nodes = treeObj.getCheckedNodes(true);
-			}
-
-			$(document).ready(function() {
-				$.get('/alllevel', data => {
-					zNodes = data;
-					$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-					setCheck();
-					$("#py").bind("change", setCheck);
-					$("#sy").bind("change", setCheck);
-					$("#pn").bind("change", setCheck);
-					$("#sn").bind("change", setCheck);
-					$(".ztree li span.button.switch").click(function() {
-						minejs();
-					});
-				})
-			});
-			function minejs() {}
-		</script>
+		<!-- <script src="/static/vue/js/element-ui.js"></script> -->
+		<!-- <script src="/static/vue/js/vue.js"></script> -->
+		<script src="/static/assets/js/echarts.min.js"></script>
 	</head>
-	<style>
-		.tabbox {
-			width: 900px;
-			margin: 10% auto;
-			padding: 15px;
-			height: 600px;
-			background: white;
-			display: none;
-		}
-		.tabbox li,
-		.tabbox ul {
-			list-style-type: none;
-		}
-		.tabbox ul {
-			margin: 0;
-			padding: 0;
-		}
-		.tabbox .tabnav,
-		.tabbox .tabcon {
-			width: 98%;
-			display: block;
-			float: left;
-		}
-		.tabbox .tabnav {
-			border-bottom: 1px solid #ddd;
-		}
-		.tabbox .tabnav li {
-			position: relative;
-			cursor: pointer;
-			float: left;
-			border-top-left-radius: 5px;
-			border-top-right-radius: 5px;
-			margin: 0px;
-			padding: 8px 26px;
-			color: #337ab7;
-			border: 1px solid #fff;
-		}
-		.tabnav li.active {
-			border: 1px solid #ddd;
-			border-bottom: none;
-			color: #555;
-		}
-		.tabnav li.active:before {
-			content: "";
-			width: 100%;
-			height: 1px;
-			bottom: -2px;
-			left: 0;
-			position: absolute;
-			background: white;
-		}
-		.tabbox .tabcon li {
-			display: none;
-			padding: 10px;
-			width: 100%;
-			height: 540px;
-			overflow: auto;
-		}
-		.tabbox .tabcon li:first-child {
-			display: block;
-		}
-		.mask {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgb(212, 212, 212);
-			display: none;
-		}
-	</style>
+
 	<body>
-		<div class="content_wrap">
-			<div class="zTreeDemoBackground left">
-				<ul id="treeDemo" class="ztree"></ul>
-				<!-- <ul id="selectObj"></ul> -->
+		<div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
+			<div class="nano">
+				<div class="nano-content">
+					<ul>
+						{% for row in node_list %}
+						<li class="active">
+							<a class="sidebar-sub-toggle"
+								><i class="ti-home"></i> {{row.name}}
+								<span class="sidebar-collapse-icon ti-angle-down"></span
+							></a>
+							<ul>
+								{% for row_son in row.child %}
+								<li class="active">
+									<a class="sidebar-sub-toggle"
+										>{{ row_son.name }}<span
+											class="sidebar-collapse-icon ti-angle-down"
+										></span
+									></a>
+									<ul>
+										{% for row_son_son in row_son.child %}
+										<li>
+											<a class="getPnrsli" id="{{ row_son_son.id }}"
+												>{{ row_son_son.name }}</a
+											>
+										</li>
+										{% endfor %}
+									</ul>
+								</li>
+								{% endfor %}
+							</ul>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
 		</div>
-	</body>
-	<script>
-		$(function() {
-			$(".tabnav li").click(function() {
-				$(".tabnav li").removeClass("active");
-				$(this).addClass("active");
-				var pd = $(this).index();
-				$(".tabcon li").hide();
-				$(".tabcon li")
-					.eq(pd)
-					.show();
-			});
-		});
-	</script>
+		<!-- /# sidebar -->
+		<div class="header">
+			<div class="pull-left">
+				<div class="logo">
+					<a href="/main/">
+						<img
+							id="logoImg"
+							src="/static/logo/logo.png"
+							data-logo_big="/static/logo/logo.png"
+							data-logo_small="/static/logo/logoSmall.png"
+							alt="Nixon"
+						/>
+					</a>
+				</div>
+				<div class="hamburger sidebar-toggle">
+					<span class="ti-menu"></span>
+				</div>
+			</div>
+			<div class="pull-right p-r-15">
+				<ul>
+					<li class="header-icon dib">
+						<i class="ti-bell"></i>
+						<div class="note-count">2</div>
+						<div class="drop-down">
+							<div class="dropdown-content-heading">
+								<span class="text-left">Recent Notifications</span>
+							</div>
+							<div class="dropdown-content-body">
+								<ul>
+									<li>
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/3.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Mr. Jane</div>
+												<div class="notification-text">
+													5 members joined today
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/3.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Mariam</div>
+												<div class="notification-text">
+													likes a photo of you
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/3.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Tasnim</div>
+												<div class="notification-text">
+													Hi Teddy, Just wanted to let you ...
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/3.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Jane Roe</div>
+												<div class="notification-text">
+													Hi Teddy, Just wanted to let you ...
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="text-center">
+										<a href="#" class="more-link">See All</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="header-icon dib">
+						<i class="ti-email"></i>
+						<div class="note-count">21</div>
+						<div class="drop-down">
+							<div class="dropdown-content-heading">
+								<span class="text-left">2 New Messages</span>
+								<a href="app-email.html"
+									><i class="ti-pencil-alt pull-right"></i
+								></a>
+							</div>
+							<div class="dropdown-content-body">
+								<ul>
+									<li class="notification-unread">
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/1.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Jane Doe</div>
+												<div class="notification-text">
+													Hi Teddy, Just wanted to let you ...
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-unread">
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/2.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Jane Roe</div>
+												<div class="notification-text">
+													Hi Teddy, Just wanted to let you ...
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/3.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Jane Doe</div>
+												<div class="notification-text">
+													Hi Teddy, Just wanted to let you ...
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<img
+												class="pull-left m-r-10 avatar-img"
+												src="/static/assets/images/avatar/2.jpg"
+												alt=""
+											/>
+											<div class="notification-content">
+												<small class="notification-timestamp pull-right"
+													>02:34 PM</small
+												>
+												<div class="notification-heading">Jane Roe</div>
+												<div class="notification-text">
+													Hi Teddy, Just wanted to let you ...
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="text-center">
+										<a href="#" class="more-link">See All</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="header-icon dib chat-sidebar-icon">
+						<i class="ti-comments"></i>
+					</li>
+					<li class="header-icon dib">
+						<img
+							class="avatar-img"
+							src="/static/assets/images/avatar/1.jpg"
+							alt=""
+						/>
+						<span class="user-avatar"
+							>Jane <i class="ti-angle-down f-s-10"></i
+						></span>
+						<div class="drop-down dropdown-profile">
+							<div class="dropdown-content-heading">
+								<span class="text-left">Upgrade Now</span>
+								<p class="trial-day">30 Days Trail</p>
+							</div>
+							<div class="dropdown-content-body">
+								<ul>
+									<li>
+										<a href="#"><i class="ti-user"></i> <span>Profile</span></a>
+									</li>
+									<li>
+										<a href="#"
+											><i class="ti-wallet"></i> <span>My Balance</span></a
+										>
+									</li>
+									<li>
+										<a href="#"
+											><i class="ti-write"></i> <span>My Task</span></a
+										>
+									</li>
+									<li>
+										<a href="#"
+											><i class="ti-calendar"></i> <span>My Calender</span></a
+										>
+									</li>
+									<li>
+										<a href="#"><i class="ti-email"></i> <span>Inbox</span></a>
+									</li>
+									<li>
+										<a href="#"
+											><i class="ti-settings"></i> <span>Setting</span></a
+										>
+									</li>
+									<li>
+										<a href="#"
+											><i class="ti-help-alt"></i> <span>Help</span></a
+										>
+									</li>
+									<li>
+										<a href="#"
+											><i class="ti-lock"></i> <span>Lock Screen</span></a
+										>
+									</li>
+									<li>
+										<a href="#"
+											><i class="ti-power-off"></i> <span>Logout</span></a
+										>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="chat-sidebar">
+			<!-- BEGIN chat -->
+			<div id="mmc-chat" class="color-default">
+				<!-- BEGIN CHAT BOX -->
+				<div class="chat-box">
+					<!-- BEGIN CHAT BOXS -->
+					<ul class="boxs"></ul>
+					<!-- END CHAT BOXS -->
+					<div class="icons-set">
+						<div class="stickers">
+							<div class="had-container">
+								<div class="row">
+									<div class="s12">
+										<ul class="tabs" style="width: 100%;height: 60px;">
+											<li class="tab col s3">
+												<a href="#tab1" class="active">
+													<img src="/static/assets/images/1.png" alt="" />
+												</a>
+											</li>
+											<li class="tab col s3"><a href="#tab2">Test 2</a></li>
+										</ul>
+									</div>
+									<div id="tab1" class="s12 tab-content">
+										<ul>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+											<li><img src="/static/assets/images/1.png" alt="" /></li>
+										</ul>
+									</div>
+									<div id="tab2" class="s12 tab-content">Test 2</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END CHAT BOX -->
+				<!-- BEGIN SIDEBAR -->
+				<div id="sidebar" class="right scroll">
+					<div class="had-container">
+						<!-- BEGIN USERS -->
+						<div class="users">
+							<ul class="user-list">
+								<!-- BEGIN USER-->
+								<li
+									class="user-tooltip"
+									data-id="1"
+									data-status="online"
+									data-username="Rufat Askerov"
+									data-position="left"
+									data-filter-item
+									data-filter-name="rufat askerov"
+								>
+									<!-- BEGIN USER IMAGE-->
+									<div class="user-image">
+										<img
+											src="/static/assets/images/avatar/1.jpg"
+											class="avatar"
+											alt="Rufat Askerov"
+										/>
+									</div>
+									<!-- END USER IMAGE-->
+									<!-- BEGIN USERNAME-->
+									<span class="user-name">Rufat Askerov</span>
+									<span class="user-show"></span>
+									<!-- END USERNAME-->
+								</li>
+								<!-- END USER-->
+								<!-- BEGIN USER-->
+								<li
+									class="user-tooltip"
+									data-id="3"
+									data-status="online"
+									data-username="Alice"
+									data-position="left"
+									data-filter-item
+									data-filter-name="alice"
+								>
+									<div class="user-image">
+										<img
+											src="/static/assets/images/avatar/1.jpg"
+											class="avatar"
+											alt="Alice"
+										/>
+									</div>
+									<span class="user-name">Alice</span>
+									<span class="user-show"></span>
+								</li>
+								<!-- BEGIN USER-->
+								<li
+									class="user-tooltip"
+									data-id="7"
+									data-status="offline"
+									data-username="Michael Scofield"
+									data-position="left"
+									data-filter-item
+									data-filter-name="michael scofield"
+								>
+									<div class="user-image">
+										<img
+											src="/static/assets/images/avatar/1.jpg"
+											class="avatar"
+											alt="Michael Scofield"
+										/>
+									</div>
+									<span class="user-name">Michael Scofield</span>
+									<span class="user-show"></span>
+								</li>
+								<!-- BEGIN USER-->
+								<li
+									class="user-tooltip"
+									data-id="5"
+									data-status="online"
+									data-username="Irina Shayk"
+									data-position="left"
+									data-filter-item
+									data-filter-name="irina shayk"
+								>
+									<div class="user-image">
+										<img
+											src="/static/assets/images/avatar/1.jpg"
+											class="avatar"
+											alt="Irina Shayk"
+										/>
+									</div>
+									<span class="user-name">Irina Shayk</span>
+									<span class="user-show"></span>
+								</li>
+								<!-- BEGIN USER-->
+								<li
+									class="user-tooltip"
+									data-id="6"
+									data-status="offline"
+									data-username="Sara Tancredi"
+									data-position="left"
+									data-filter-item
+									data-filter-name="sara tancredi"
+								>
+									<div class="user-image">
+										<img
+											src="/static/assets/images/avatar/1.jpg"
+											class="avatar"
+											alt="Sara Tancredi"
+										/>
+									</div>
+									<span class="user-name">Sara Tancredi</span>
+									<span class="user-show"></span>
+								</li>
+								<!-- BEGIN USER-->
+								<li
+									class="user-tooltip"
+									data-id="7"
+									data-status="offline"
+									data-username="Jane"
+									data-position="left"
+									data-filter-item
+									data-filter-name="Jane"
+								>
+									<div class="user-image">
+										<img
+											src="/static/assets/images/avatar/1.jpg"
+											class="avatar"
+											alt="Jane"
+										/>
+									</div>
+									<span class="user-name">Jane</span>
+									<span class="user-show"></span>
+								</li>
+							</ul>
+							<div class="chat-user-search">
+								<div class="input-group">
+									<span class="input-group-addon"
+										><i class="ti-search"></i
+									></span>
+									<input
+										type="text"
+										class="form-control"
+										placeholder="Search"
+										data-search
+									/>
+								</div>
+							</div>
+						</div>
+						<!-- END USERS -->
+					</div>
+				</div>
+				<!-- END SIDEBAR -->
+			</div>
+			<!-- END chat -->
+		</div>
+		<!-- END chat Sidebar-->
+		<div class="content-wrap">
+			<div class="main">
+				<div class="container-fluid">
+					<!-- /# main content -->
+					<div id="tree" style="width: 100%; height: calc(100vh - 70px)"></div>
+					<script>
+						let myChart = echarts.init(document.getElementById("tree"));
+						myChart.showLoading();
+						$.get("/alllevel", function(data) {
+							myChart.hideLoading();
 
-	<div
-		style="text-align:center;margin:10px 0; font:normal 14px/24px 'MicroSoft YaHei';"
-	>
-		<!-- /# main content -->Copyright &copy; 2019.Company name All rights
-		reserved.<a target="_blank" href="http://www.cauc.edu.cn">中国民航大学</a>
-	</div>
+							echarts.util.each(data.children, function(datum, index) {
+								index % 2 === 0 && (datum.collapsed = true);
+							});
+
+							myChart.setOption(
+								(option = {
+									tooltip: {
+										trigger: "item",
+										triggerOn: "mousemove"
+									},
+									series: [
+										{
+											type: "tree",
+
+											data: [data],
+
+											top: "1%",
+											left: "7%",
+											bottom: "1%",
+											right: "20%",
+
+											symbolSize: 15,
+
+											label: {
+												normal: {
+													position: "left",
+													verticalAlign: "middle",
+													align: "right",
+													fontSize: 15
+												}
+											},
+
+											leaves: {
+												label: {
+													normal: {
+														position: "right",
+														verticalAlign: "middle",
+														align: "left"
+													}
+												}
+											},
+
+											expandAndCollapse: true,
+											animationDuration: 550,
+											animationDurationUpdate: 750
+										}
+									]
+								})
+							);
+						});
+					</script>
+				</div>
+				<!-- /# container-fluid -->
+			</div>
+			<!-- /# main -->
+		</div>
+		<!-- /# content wrap -->
+		<script src="/static/assets/js/lib/jquery.min.js"></script>
+		<!-- jquery vendor -->
+		<script src="/static/assets/js/lib/jquery.nanoscroller.min.js"></script>
+		<!-- nano scroller -->
+		<script src="/static/assets/js/lib/sidebar.js"></script>
+		<!-- sidebar -->
+		<script src="/static/assets/js/lib/bootstrap.min.js"></script>
+		<!-- bootstrap -->
+		<script src="/static/assets/js/lib/mmc-common.js"></script>
+		<script src="/static/assets/js/lib/mmc-chat.js"></script>
+		<!--  Chart js -->
+		<script src="/static/assets/js/lib/chart-js/Chart.bundle.js"></script>
+		<script src="/static/assets/js/lib/chart-js/chartjs-init.js"></script>
+		<!-- // Chart js -->
+		<!--  Datamap -->
+		<script src="/static/assets/js/lib/datamap/d3.min.js"></script>
+		<script src="/static/assets/js/lib/datamap/topojson.js"></script>
+		<script src="/static/assets/js/lib/datamap/datamaps.world.min.js"></script>
+		<script src="/static/assets/js/lib/datamap/datamap-init.js"></script>
+		<script src="/static/assets/lib/lobipanel/js/lobipanel.js"></script>
+		<!-- // Datamap -->
+		<script src="/static/assets/js/scripts.js"></script>
+		<!-- scripit init-->
+		<script>
+			$(document).ready(function() {
+				$("#lobipanel-custom-control").lobiPanel({
+					reload: false,
+					close: false,
+					editTitle: false
+				});
+			});
+		</script>
+	</body>
 </html>
