@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80018
 File Encoding         : 65001
 
-Date: 2019-11-28 12:58:50
+Date: 2019-12-01 21:15:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -2564,13 +2564,45 @@ INSERT INTO `apply` VALUES ('612C4100-099', 'A320');
 DROP TABLE IF EXISTS `classification`;
 CREATE TABLE `classification` (
   `Claname` varchar(50) NOT NULL,
-  `CPname` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Claname`)
+  `CPname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`Claname`,`CPname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of classification
 -- ----------------------------
+INSERT INTO `classification` VALUES ('公共属性', 'ATA');
+INSERT INTO `classification` VALUES ('公共属性', 'FUN');
+INSERT INTO `classification` VALUES ('公共属性', 'LRU Name');
+INSERT INTO `classification` VALUES ('公共属性', 'PNR');
+INSERT INTO `classification` VALUES ('其他属性', 'ADT');
+INSERT INTO `classification` VALUES ('其他属性', 'ATE');
+INSERT INTO `classification` VALUES ('其他属性', 'BFE');
+INSERT INTO `classification` VALUES ('其他属性', 'MSQ');
+INSERT INTO `classification` VALUES ('其他属性', 'MTBR');
+INSERT INTO `classification` VALUES ('其他属性', 'NHA 1');
+INSERT INTO `classification` VALUES ('其他属性', 'NHA 2');
+INSERT INTO `classification` VALUES ('其他属性', 'RFS');
+INSERT INTO `classification` VALUES ('其他属性', 'RRI');
+INSERT INTO `classification` VALUES ('其他属性', 'TPC');
+INSERT INTO `classification` VALUES ('备件属性', 'ESS');
+INSERT INTO `classification` VALUES ('备件属性', 'LTM');
+INSERT INTO `classification` VALUES ('备件属性', 'MFR');
+INSERT INTO `classification` VALUES ('备件属性', 'MST');
+INSERT INTO `classification` VALUES ('备件属性', 'MTBUR');
+INSERT INTO `classification` VALUES ('备件属性', 'QPA');
+INSERT INTO `classification` VALUES ('备件属性', 'SCR');
+INSERT INTO `classification` VALUES ('备件属性', 'SPC');
+INSERT INTO `classification` VALUES ('备件属性', 'UNP');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'Access');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'Body photos');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'Dimension');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'Man Hours');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'Mounting Type');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'Remove Procedure');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'Weight');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'ZONE');
+INSERT INTO `classification` VALUES ('航线可拆卸属性', 'ZONE photos');
 
 -- ----------------------------
 -- Table structure for component
@@ -2619,7 +2651,7 @@ CREATE TABLE `component` (
 -- ----------------------------
 -- Records of component
 -- ----------------------------
-INSERT INTO `component` VALUES ('00-200-610', '32', '00624', 'U1598', 'NONE', '1', '1', null, 'C', '44200', '0', '999', '0', '1', '1', null, '30', '619.97', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `component` VALUES ('00-200-610', '32', '00624', 'U1598', 'NONE', '1', '1', null, 'C', '44200', '0', '999', '0', '1', '1', null, '30', '619.97', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 'LRU');
 INSERT INTO `component` VALUES ('00-200-611', '32', '00624', 'U1598', 'NONE', '1', '1', null, 'C', '44200', '0', '999', '0', '1', '2', null, '30', '610.72', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `component` VALUES ('000100-0113C', '52', '05574', 'D8518', 'NONE', '1', '3', null, 'H', '30000', '0', '999', '0', '1', '2', null, '45', '572.00', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `component` VALUES ('0016BM001612B60', '38', '86831', 'D8518', 'CMM', '2', '3', null, 'H', '50000', '0', '1', '10', '1', '2', null, '14', '212.00', '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
