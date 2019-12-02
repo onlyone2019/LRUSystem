@@ -94,13 +94,6 @@
 						</li>
 						{% endfor %}
 					</ul>
-					<script>
-						function updateTree(plane, ATAnum) {
-							$.get(`/getTree?plane=${plane}&ATAnum=${ATAnum}`, data => {
-								option.series[0].data = [data];
-							});
-						}
-					</script>
 				</div>
 			</div>
 		</div>
@@ -579,10 +572,6 @@
 						let myChart = echarts.init(document.getElementById("tree"));
 						let data = [];
 
-						echarts.util.each(data.children, function(datum, index) {
-							index % 2 === 0 && (datum.collapsed = true);
-						});
-
 						let option = {
 							tooltip: {
 								trigger: "item",
@@ -626,7 +615,21 @@
 								}
 							]
 						};
-						myChart.setOption(option);
+
+						function updateTree(plane, ATAnum) {
+							// myChart.showLoading();
+							$.get(`/getTree?plane=${plane}&ATAnum=${ATAnum}`, data => {
+								// myChart.hideLoading();
+								option.series[0].data = [data];
+
+								// 不展开三级结点
+								echarts.util.each(data.children, function(datum, index) {
+									datum.collapsed = true;
+								});
+
+								myChart.setOption(option);
+							});
+						}
 					</script>
 				</div>
 				<!-- /# container-fluid -->
