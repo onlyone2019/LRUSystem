@@ -55,3 +55,41 @@ def alllevel(request):  #返回整棵树内容
             # print(tmp)
             result.append(tmp.copy())
     return JsonResponse(result,safe=False,json_dumps_params={'ensure_ascii':False})
+
+def getTree(request):  #返回具体的树内容
+    ATAnum = '28'
+    plane='A321'
+    if request.method == "GET":
+        plane=request.GET.get('plane', default='A321')
+        ATAnum = request.GET.get('ATAnum', default='28')
+        mysql_single, cu = MySQLSingle().getConCu()
+        cu.execute('select DISTINCT ATA,ATA_name,ATA_name_zh from newtree where ATA="%s" and Plane="%s"' %(ATAnum,plane))
+        message = cu.fetchall()
+        result = {}
+        for i in range(0, len(message)):
+            result['name'] = message[i]['ATA_name_zh']
+            break
+        result['children'] = []
+        cu.execute('select DISTINCT child_ATA,child_ATA_name,child_ATA_name_zh from newtree where ATA="%s" and Plane="%s"' % (ATAnum, plane))
+        message = cu.fetchall()
+        for i in range(0, len(message)):
+            child1 = {}
+            if message[i]['child_ATA_name_zh'] != None:
+                child1['name'] = message[i]['child_ATA_name_zh']
+            else:
+                child1['name'] = message[i]['child_ATA_name']
+            to_search = message[i]['child_ATA']
+            child1['children'] = []
+            cu.execute('select DISTINCT grandson_ATA,grandson_ATA_name,grandson_ATA_name_zh from newtree where child_ATA="%s" and Plane="%s"' % (to_search, plane))
+            data = cu.fetchall()
+            for item in range(0, len(data)):
+                tmp={}
+                nm=""
+                if data[item]['grandson_ATA_name_zh'] != None:
+                    nm = data[item]['grandson_ATA_name_zh']
+                else:
+                    nm = data[item]['grandson_ATA_name']
+                tmp['name']=nm
+                child1['children'].append(tmp.copy())
+            result['children'].append(child1.copy())
+        return JsonResponse(result,safe=False,json_dumps_params={'ensure_ascii':False})

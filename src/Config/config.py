@@ -21,5 +21,3 @@ const.DB_CONFIG = {
     'passwd': 'wangjin',
     'db':'lru2'
 }
-
-
