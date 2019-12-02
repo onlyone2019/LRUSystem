@@ -79,7 +79,9 @@
 									></a>
 									<ul>
 										{% for row_son_son in row_son.child %}
-										<li>
+										<li
+											onclick="updateTree('{{ row_son.name }}', '{{ row_son_son.name }}')"
+										>
 											<a class="getPnrsli" id="{{ row_son_son.id }}"
 												>{{ row_son_son.name }}</a
 											>
@@ -92,6 +94,13 @@
 						</li>
 						{% endfor %}
 					</ul>
+					<script>
+						function updateTree(plane, ATAnum) {
+							$.get(`/getTree?plane=${plane}&ATAnum=${ATAnum}`, data => {
+								option.series[0].data = [data];
+							});
+						}
+					</script>
 				</div>
 			</div>
 		</div>
@@ -568,60 +577,56 @@
 					<div id="tree" style="width: 100%; height: calc(100vh - 70px)"></div>
 					<script>
 						let myChart = echarts.init(document.getElementById("tree"));
-						myChart.showLoading();
-						$.get("/alllevel", function(data) {
-							myChart.hideLoading();
+						let data = [];
 
-							echarts.util.each(data.children, function(datum, index) {
-								index % 2 === 0 && (datum.collapsed = true);
-							});
-
-							myChart.setOption(
-								(option = {
-									tooltip: {
-										trigger: "item",
-										triggerOn: "mousemove"
-									},
-									series: [
-										{
-											type: "tree",
-
-											data: [data],
-
-											top: "1%",
-											left: "7%",
-											bottom: "1%",
-											right: "20%",
-
-											symbolSize: 15,
-
-											label: {
-												normal: {
-													position: "left",
-													verticalAlign: "middle",
-													align: "right",
-													fontSize: 15
-												}
-											},
-
-											leaves: {
-												label: {
-													normal: {
-														position: "right",
-														verticalAlign: "middle",
-														align: "left"
-													}
-												}
-											},
-
-											expandAndCollapse: true,
-											animationDuration: 550,
-											animationDurationUpdate: 750
-										}
-									]
-								})
-							);
+						echarts.util.each(data.children, function(datum, index) {
+							index % 2 === 0 && (datum.collapsed = true);
 						});
+
+						let option = {
+							tooltip: {
+								trigger: "item",
+								triggerOn: "mousemove"
+							},
+							series: [
+								{
+									type: "tree",
+
+									data: [data],
+
+									top: "1%",
+									left: "7%",
+									bottom: "1%",
+									right: "20%",
+
+									symbolSize: 15,
+
+									label: {
+										normal: {
+											position: "left",
+											verticalAlign: "middle",
+											align: "right",
+											fontSize: 15
+										}
+									},
+
+									leaves: {
+										label: {
+											normal: {
+												position: "right",
+												verticalAlign: "middle",
+												align: "left"
+											}
+										}
+									},
+
+									expandAndCollapse: true,
+									animationDuration: 550,
+									animationDurationUpdate: 750
+								}
+							]
+						};
+						myChart.setOption(option);
 					</script>
 				</div>
 				<!-- /# container-fluid -->

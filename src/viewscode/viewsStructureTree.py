@@ -35,7 +35,7 @@ def structureTree(request):
             cu.execute(
                 'SELECT DISTINCT ATA from apply INNER JOIN component on apply.prn=component.PNR where apply.PModelname="%s"' %
                 second_res[j]['PModelname'])
-            thrid_res = cu.fetchall()
+            thrid_res = sorted(cu.fetchall(), key=lambda i : int(i['ATA']))
             second_node['id'] = fist_res[i]['Mername'] + "-" + second_res[j]['PModelname']
             second_node['pId'] = fist_res[i]['Mername']
             second_node['name'] = second_res[j]['PModelname']
