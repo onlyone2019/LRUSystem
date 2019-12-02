@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `apply`;
 CREATE TABLE `apply` (
   `prn` varchar(50) DEFAULT NULL,
   `PModelname` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of apply
@@ -5191,7 +5191,7 @@ CREATE TABLE `componentproperty` (
   `CPremark` longtext,
   `CPother` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`CPname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of componentproperty
@@ -5240,7 +5240,7 @@ CREATE TABLE `cpclass` (
   `Cpclassname` varchar(50) NOT NULL,
   `Mername` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Cpclassname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of cpclass
@@ -5256,7 +5256,7 @@ CREATE TABLE `manufacturer` (
   `Mername` varchar(50) NOT NULL,
   `Merother` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Mername`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of manufacturer
@@ -5270,7 +5270,7 @@ DROP TABLE IF EXISTS `merandcp`;
 CREATE TABLE `merandcp` (
   `Mername` varchar(50) DEFAULT NULL,
   `CPname` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of merandcp
@@ -5285,7 +5285,7 @@ CREATE TABLE `pmodel` (
   `PModeldc` varchar(50) DEFAULT NULL,
   `Mername` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`PModelname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of pmodel
@@ -5308,7 +5308,7 @@ CREATE TABLE `tree` (
   `grandson_ATA` varchar(100) DEFAULT NULL,
   `grandson_ATA_name` varchar(100) DEFAULT NULL,
   `grandson_ATA_name_zh` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of tree
