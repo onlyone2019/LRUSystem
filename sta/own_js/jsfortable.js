@@ -1,25 +1,82 @@
 
-
+/*生成菜单*/
 function initSearchbox() {
-            /// <summary>初始化下拉搜索框</summary>
-            //循环列名，生成搜索的下拉列表
-            var fields = $('#pnrListTable').datagrid('getColumnFields');
-            var muit = "";
-            for (var i = 0; i < fields.length; i++) {
+        // $.parser.parse('#searchbox');
+        // $.parser.parse('#mm');
+        /// <summary>初始化下拉搜索框</summary>
+            var m = $('#searchbox').searchbox('menu');
+            if(m!=null)
+            {
+               /* m = null;
+               if(m[0].hasChildNodes())
+                {
+                    var childs = m[0].children;
+                    for(var i = childs .length - 1; i >= 0; i--) {
+                      if(childs[i].class=="recl")
+                            m[0].removeChild(childs[i]);
+                    }
+                }*/
+
+            }
+            else
+            {
+                addChildmenu();
+                $('#searchbox').searchbox({
+                menu: '#mm'
+                });
+
+                //将生成好的搜索框放入工具栏
+                $(".datagrid-toolbar").append($("#searchboxWrapper"));
+            }
+
+
+
+
+
+}
+function addChildmenu()
+{
+     var fields = null;
+            fields = $('#pnrListTable').datagrid('getColumnFields');
+            var father = document.getElementById("mm");
+    for (var i = 0; i < fields.length; i++) {
+                var divnodes = document.createElement("div");
                 var opts = $('#pnrListTable').datagrid('getColumnOption', fields[i]);
                 if (opts.table) {
-                    muit += "<div name='" + opts.table + "." + opts.column + "'>" + opts.title + "</div>";
-                } else {
-                    muit += "<div name='" + fields[i] + "'>" + opts.title + "</div>";
+                    //为div创建属性class = "recl"  
+                    var divattr = document.createAttribute("class");  
+                    divattr.value = "recl";        
+                    //把属性class = "recl"添加到div  
+                    divnodes.setAttributeNode(divattr);  
+                    //为div创建属性names = "recl"  
+                    var divattr2 = document.createAttribute("name");  
+                    divattr2.value = opts.table + "." + opts.column;        
+                    //把属性class = "recl"添加到div  
+                    divnodes.setAttributeNode(divattr2);  
+
+                    var text = document.createTextNode( opts.title );
+                    divnodes.appendChild(text);
+                    father.appendChild(divnodes);
+                }
+                else {
+                    //为div创建属性class = "recl"  
+                    var divattr = document.createAttribute("class");  
+                    divattr.value = "recl";        
+                    //把属性class = "recl"添加到div  
+                    divnodes.setAttributeNode(divattr);  
+                    //为div创建属性names = "recl"  
+                    var divattr2 = document.createAttribute("name");  
+                    divattr2.value =  fields[i];        
+                    //把属性class = "recl"添加到div  
+                    divnodes.setAttributeNode(divattr2);  
+
+                    var text = document.createTextNode( opts.title);
+                    divnodes.appendChild(text);
+                    father.appendChild(divnodes);
                 }
             };
-            $('#mm').html($('#mm').html() + muit);
-            $('#searchbox').searchbox({
-                menu: '#mm'
-            });
-            //将生成好的搜索框放入工具栏
-            $(".datagrid-toolbar").append($("#searchboxWrapper"));
-        }
+
+}
 /*左侧导航栏ajax获取右侧表格*/
 $(".getPnrsli").click(function(){
     /*alert( $(this).attr('id'));*/
@@ -76,7 +133,7 @@ $(".getPnrsli").click(function(){
                     });
 
                    $('#pnrListTable').datagrid('loadData', obj);
-                    initSearchbox();
+                   initSearchbox();
 
                 }
             })
@@ -439,8 +496,45 @@ function toolBarSearcher(value, name) {
 
 
 }
+/*点击按钮显示属性*/
+function dialogPropData() {
+    $.ajax({
+        type: "POST",
+        url: '/getAllPropertyInfos/',
+        dataType: "text",
+        success:function (json_str) {
+            $.parser.parse('#dialogProper');
+            $.parser.parse('#tbproty');
+            var obj = JSON.parse(json_str);
+                //alert(json_str);
+             $('#propretyListTable').datagrid({
+                        columns:[[
+                            {field:'CPname',title:'属性名',width:100,align:'center'},
+                            {field:'CPremark',title:'解释',width:300,align:'center'},
+                            {field:'CPother',title:'备注',width:100,align:'center'},
+                        ]]
+                    });
+             $('#propretyListTable').datagrid('loadData', obj);
+             $('#dd').dialog({
+                         modal: true
+                    });
+
+              /*$('#propretyListTable').datagrid("options").view.onAfterRender = function (target, rows) {
+              $('#dd').dialog({
+                         modal: true
+                    });
+                  //$('#dialogProper').modal('show');
+                };*/
 
 
+
+             //setTimeout(function(){ $('#dialogProper').modal('show'); }, 3000);
+
+        }
+
+    });
+
+}
 
 
 /*

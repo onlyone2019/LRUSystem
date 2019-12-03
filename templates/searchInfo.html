@@ -34,6 +34,7 @@
 
 
 </head>
+
 <style>
 .tabbox{width:900px; margin:10% auto; padding: 15px; height:600px; background: white;display: none}
 .tabbox li,.tabbox ul{list-style-type: none}
@@ -48,6 +49,59 @@
 .mask{position: fixed; top: 0; left: 0; width:100%; height: 100%; background: rgb(212, 212, 212); display: none}
 </style>
 
+<body>
+<div id="dd" class="easyui-dialog" title="属性信息" style="display:none;width:525px;height:600px;"
+    data-options="resizable:true,modal:false">
+    <table class="easyui-datagrid" style="display:inline-block;height:600px;width:500px;overflow: auto" id="propretyListTable" toolbar="#tbproty" >
+             <thead>
+                <tr>
+                   <th data-options="field:'CPname',sortable:true,width:100">属性名称</th>
+                    <th data-options="field:'CPremark',width:200">解释</th>
+                    <th data-options="field:'CPother',width:100">备注</th>
+                </tr>
+            </thead>
+            </table>
+                 <div id="tbproty" >
+                    <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="$('#propretyListTable').datagrid('toExcel','pnrlist.xls')">导出</a>
+                    <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-print" plain="true" onclick="$('#propretyListTable').datagrid('print','DataGrid')">打印</a>
+                 </div>
+</div>
+{% comment %}模态对话框{% endcomment %}
+{% comment %}<div class="modal fade" id="dialogProper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close"data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          属性信息
+        </h4>
+      </div>
+
+      <div class="modal-body" id="modalby">
+          <input id="sssss" type="text"></input>
+            <table class="easyui-datagrid" style="display:inline-block;height:600px;width:500px;overflow: auto" id="propretyListTable" toolbar="#tbproty" >
+             <thead>
+                <tr>
+                   <th data-options="field:'CPname',sortable:true">属性名称</th>
+                    <th data-options="field:'CPremark'">解释</th>
+                    <th data-options="field:'CPother'">备注</th>
+                </tr>
+            </thead>
+            </table>
+                 <div id="tbproty" >
+                    <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="$('#propretyListTable').datagrid('toExcel','pnrlist.xls')">导出</a>
+                    <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-print" plain="true" onclick="$('#propretyListTable').datagrid('print','DataGrid')">打印</a>
+                 </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+
+    </div>
+  </div>
+</div> {% endcomment %}{% comment %}对话框结束{% endcomment %}
 
 <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
     <div class="nano">
@@ -385,7 +439,7 @@
                             <ol class="breadcrumb text-right">
                                 <li><a href="javascript:void(0)" id="AdvanceSearchControl" onclick="showAdvancePanel()">高级查询</a></li>
                                 <li><a href="javascript:void(0)" id="PropertyControl" onclick="showPropertyPanel()">属性筛选</a></li>
-                                <li class="active">属性信息</li>
+                                <li><a href="javascript:void(0)" id="PropertyControl" onclick="dialogPropData()">属性信息</a></li>
                             </ol>
                         </div>
                     </div>
@@ -473,8 +527,9 @@
                             <span class="glyphicon glyphicon-eye-open" style="padding-right: 4px"></span>全部属性
                     </button>
              </div>
-             <div class="row-fluid" style="padding-top: 10px;height:700px;width:1150px;">
+             <div id="showRes" class="row-fluid" style="padding-top: 10px;height:700px;width:1150px;">
                  <table class="easyui-datagrid" style="margin-left:50px;height:600px;width:1150px;overflow: auto" id="pnrListTable" toolbar="#tb" title="查询结果">
+
                  </table>
                  <div id="tb" style="display: none">
                     <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="$('#pnrListTable').datagrid('toExcel','pnrlist.xls')">导出</a>
@@ -484,7 +539,9 @@
                         width: 200px;">
                         <input id="searchbox" class="easyui-searchbox"  prompt="请输入搜索内容" searcher="toolBarSearcher"
                             style="width: 250px; margin-top: 10px; padding-top: 10px;"></input>
-                        <div id="mm" style="width: 100px">
+                        {% comment %}<select id="mm" class="easyui-combobox" name="state" label="State:" labelPosition="top" style="width:100px;"></select>{% endcomment %}
+                        <div class="searchlist" id="mm" style="width: 100px">
+
                         </div>
                     </div>
                  </div>
@@ -493,7 +550,6 @@
             <!-- /# main content --><div class="row-fluid" style="float: right">Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://www.cauc.edu.cn">中国民航大学</a></div>
         </div><!-- /# container-fluid -->
     </div><!-- /# main -->
-
 </div><!-- /# content wrap -->
 
 

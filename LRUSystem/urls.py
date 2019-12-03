@@ -32,7 +32,7 @@ urlpatterns = [
     path('getAllPnrs/', viewsSearchInfo.getAllPnrs), #高级信息获取pnrs
     path('getPropertysaAndClass/', viewsSearchInfo.getPropertysaAndClass), #高级信息获取pnrs
     path('getClassPropertys/', viewsSearchInfo.getClassProperty), #高级信息获取pnrs
-
+    path('getAllPropertyInfos/', viewsSearchInfo.getAllPropertyInfos), #高级信息获取pnrs
 
     #结构树状图展示界面
     path('structureTree/', viewsStructureTree.structureTree),

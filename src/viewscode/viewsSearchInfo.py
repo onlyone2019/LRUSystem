@@ -26,9 +26,11 @@ def getPnrs(request):
         message = data.get('message')
         print("信息查询页面请求ata部件:"+ message)
         info = message.split("-")
+        '''
         cu.execute(
             'create or REPLACE view combine(mername,pmodel,pnr) as select manufacturer.Mername as a,pmodel.PModelname as b,apply.prn as c from  pmodel INNER join manufacturer on pmodel.Mername = manufacturer.Mername inner join apply on pmodel.PModelname = apply.PModelname')
         mysql_single.commit()
+        '''
         cu.execute('SELECT DISTINCT * from combine inner join component on combine.pnr=component.PNR where combine.mername="%s" and combine.pmodel="%s" and component.ATA="%s"'%(info[0],info[1],info[2]))
         table_data = cu.fetchall()
         json_str = {}
@@ -133,9 +135,11 @@ def getAdvancePnrs(request):
         Mernames = data.get('Mernames')
 
         print("高级信息查询页面请求ata部件:\n"+ str(atas) + "\n" + str(PModelnames) + "\n"+str(Mernames))
+        '''
         cu.execute(
             'create or REPLACE view combine(mername,pmodel,pnr) as select manufacturer.Mername as a,pmodel.PModelname as b,apply.prn as c from  pmodel INNER join manufacturer on pmodel.Mername = manufacturer.Mername inner join apply on pmodel.PModelname = apply.PModelname')
         mysql_single.commit()
+        '''
         #为不同的情况构建子句
         flag_ata = (0 == len(atas.strip()))
         flag_pmod = (0 == len(PModelnames.strip()))
@@ -175,9 +179,11 @@ def getAllPnrs(request):
     if request.is_ajax():
         mysql_single, cu = MySQLSingle().getConCu()
         # 直接获取所有的post请求数据
+        '''
         cu.execute(
             'create or REPLACE view combine(mername,pmodel,pnr) as select manufacturer.Mername as a,pmodel.PModelname as b,apply.prn as c from  pmodel INNER join manufacturer on pmodel.Mername = manufacturer.Mername inner join apply on pmodel.PModelname = apply.PModelname')
         mysql_single.commit()
+        '''
         cu.execute('SELECT DISTINCT * from combine inner join component on combine.pnr=component.PNR')
         table_data = cu.fetchall()
         json_str = {}
@@ -188,6 +194,20 @@ def getAllPnrs(request):
         return HttpResponse("收到")
 
 
+#获取所有属性信息
+def getAllPropertyInfos(request):
+    if request.is_ajax():
+        mysql_single, cu = MySQLSingle().getConCu()
+        # 直接获取所有的post请求数据
+        print('前台请求属性列表')
+        cu.execute('SELECT CPname, CPremark,CPother from componentproperty')
+        table_data = cu.fetchall()
+        json_str = {}
+        json_str['total'] = len(table_data)
+        json_str['rows'] = table_data
+        return JsonResponse(json_str,safe=False,json_dumps_params={'ensure_ascii':False})
+    else:
+        return HttpResponse("收到")
 
 #获取所有属性列名称
 def getPropertysaAndClass(request):
