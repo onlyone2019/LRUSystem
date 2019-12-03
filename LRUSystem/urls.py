@@ -24,6 +24,12 @@ urlpatterns = [
     path('main/', viewsMain.main),
     #分析界面
     path('chart/', viewsAnalysis.chart),
+    path('getEss/', viewsAnalysis.getEss),#ESS饼状图分析
+    path('getMfrNumbers/', viewsAnalysis.getMfrNumbers),#MFR折线图与柱状图
+    path('getATANumbers/', viewsAnalysis.getATANumbers),#ATA折线图与柱状图
+    path('getATAESSNumbers/', viewsAnalysis.getATAESSNumbers),#ATAESS折线图与柱状图
+    path('getSPC/', viewsAnalysis.getSPC),#SPC饼状图分析
+
     #Pnr具体信息查找页面
     path('tableSearch/', viewsSearchInfo.searchInfo), #数据查找界面
     path('getPnrs/', viewsSearchInfo.getPnrs), #获取Pnrs信息

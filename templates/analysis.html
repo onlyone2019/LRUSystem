@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Nixon : Flot Chart</title>
+    <title>属性分析</title>
 
     <!-- ================= Favicon ================== -->
     <!-- Standard -->
@@ -28,10 +28,18 @@
     <link href="/static/assets/css/lib/bootstrap.min.css" rel="stylesheet">
     <link href="/static/assets/css/lib/nixon.css" rel="stylesheet">
     <link href="/static/assets/css/style.css" rel="stylesheet">
-
-    <style type="text/css">
-
-    </style>
+    <script src="/static/assets/js/bootstrap-select.js"></script>
+    <script src="/static/assets/js/echarts.min.js"></script>
+    <script type="text/javascript">
+        var comboxPmodeData
+        //初始化pie的combox
+        try{
+            comboxPmodeData   = {{ PModelname|safe }} ;
+        }
+        catch(err) {
+            alert(初始化失败);
+        }
+    </script>
 </head>
 
 <body>
@@ -55,7 +63,7 @@
                 <li>
                     <a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i>  报表分析  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
-                        <li><a href="/chart/">Flot</a></li>
+                        <li><a href="/chart/">属性分析</a></li>
 
                     </ul>
                 </li>
@@ -380,7 +388,7 @@
                     <div class="page-header">
                         <div class="page-title">
                             <ol class="breadcrumb text-right">
-                                <li><a href="#">Dashboard</a></li>
+                                <li><a href="#">数据分析</a></li>
                                 <li class="active">Chart</li>
                             </ol>
                         </div>
@@ -392,21 +400,41 @@
                     <div class="col-lg-6">
                         <div class="card alert">
                             <div class="card-header">
-                                <h4>ESS属性分布</h4>
+                                选择机型
+                                <select id="selectPmodel" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button id="EssBt"  onclick="essAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
+
+
                             </div>
                             <div class="flot-container">
-                                <div id="flot-pie" class="flot-pie-container"></div>
+                                <div id="esspie" style="width:100%;height:275px;"></div>
                             </div>
+
+
                         </div><!-- /# card -->
                     </div><!-- /# column -->
 
                     <div class="col-lg-6">
                         <div class="card alert">
                             <div class="card-header">
-                                <h4>Line Chart</h4>
+                                选择机型
+                                <select id="selectPmodelMFR" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button id="MFRBt"  onclick="mfrAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
                             </div>
                             <div class="flot-container">
-                                <div id="chart1" style="width:100%;height:275px;"></div>
+                                <div id="MFRhistogram" style="width:100%;height:275px;"></div>
                             </div>
                         </div><!-- /# card -->
                     </div><!-- /# column -->
@@ -415,10 +443,18 @@
                     <div class="col-lg-6">
                         <div class="card alert">
                             <div class="card-header">
-                                <h4>Bar Chart</h4>
+                                 选择机型
+                                <select id="selectPmodelATA" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button id="ATABt"  onclick="ataAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
                             </div>
                             <div class="flot-container">
-                                <div id="flotBar" style="width:100%;height:275px;"></div>
+                                <div id="ATAhis" style="width:100%;height:275px;"></div>
                             </div>
                         </div><!-- /# card -->
                     </div><!-- /# column -->
@@ -426,14 +462,76 @@
                     <div class="col-lg-6">
                         <div class="card alert">
                             <div class="card-header">
-                                <h4>Curve Line</h4>
+                                <div class="card-header">
+                                 选择机型
+                                <select id="selectPmodelATAESS" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                选择ESS
+                                <select id="selectESSThrid" class="selectpicker" style="margin-left:6px;height: 35px">
+                                    <option>NO-GO项目(ESS=1)</option>
+                                    <option>GO-IF项目(ESS=2)</option>
+                                    <option>GO项目(ESS=3)</option>
+                                </select>
+                                <button id="ATAESSBt"  onclick="ataessAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
                             </div>
                             <div class="flot-container">
-                                <div id="flotCurve" style="width:100%;height:275px;"></div>
+                                <div id="ATAESS" style="width:100%;height:275px;"></div>
                             </div>
                         </div><!-- /# card -->
                     </div><!-- /# column -->
-                </div><!-- /# row -->     </div>
+                </div><!-- /# row -->
+                {% comment %}row33{% endcomment %}
+                 <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                选择机型
+                                <select id="selectPmodelSPC" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button id="spcBt"  onclick="spcAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
+
+
+                            </div>
+                            <div class="flot-container">
+                                <div id="spcpie" style="width:100%;height:275px;"></div>
+                            </div>
+
+
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                选择机型
+                                <select id="selectPmodelMFR2" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button id="MFRBt2"  onclick="mfrAnaBt2()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
+                            </div>
+                            <div class="flot-container">
+                                <div id="MFRhistogram2" style="width:100%;height:275px;"></div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+                </div>
+                 {% comment %}row3{% endcomment %}
+
+                </div>
             <!-- /# main content -->Copyright &copy; 2019.Company name All rights reserved.中国民航大学;</a>
         </div><!-- /# container-fluid -->
     </div><!-- /# main -->
@@ -451,20 +549,9 @@
 <script src="/static/assets/js/lib/bootstrap.min.js"></script><!-- bootstrap -->
 <script src="/static/assets/js/lib/mmc-common.js"></script>
 <script src="/static/assets/js/lib/mmc-chat.js"></script>
-<!--  flot-chart js -->
-<script src="/static/assets/js/lib/flot-chart/excanvas.min.js"></script>
-<script src="/static/assets/js/lib/flot-chart/jquery.flot.js"></script>
-<script src="/static/assets/js/lib/flot-chart/jquery.flot.pie.js"></script>
-<script src="/static/assets/js/lib/flot-chart/jquery.flot.time.js"></script>
-<script src="/static/assets/js/lib/flot-chart/jquery.flot.stack.js"></script>
-<script src="/static/assets/js/lib/flot-chart/jquery.flot.resize.js"></script>
-<script src="/static/assets/js/lib/flot-chart/jquery.flot.crosshair.js"></script>
-<script src="/static/assets/js/lib/flot-chart/curvedLines.js"></script>
-<script src="/static/assets/js/lib/flot-chart/flot-tooltip/jquery.flot.tooltip.min.js"></script>
-<script src="/static/assets/js/lib/flot-chart/flot-chart-init.js"></script>
-<!-- // flot-chart js -->
-<script src="/static/assets/js/scripts.js"></script><!-- scripit init-->
-
+{% comment %}各种图标js{% endcomment %}
+<script type="text/javascript" src="/static/easyui/jquery.easyui.min.js"></script>
+<script src="/static/own_js/jsforanalysis.js"></script>
 
 </body>
 

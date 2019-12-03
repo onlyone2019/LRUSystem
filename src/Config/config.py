@@ -17,7 +17,7 @@ const = constant.Const()
 const.DB_CONFIG = {
     'host': 'localhost',
     'port': 3306,
-    'user': 'lru',
-    'passwd': 'lru',
+    'user': 'root',
+    'passwd': 'wangjin',
     'db':'lru'
 }
