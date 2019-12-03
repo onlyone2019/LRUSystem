@@ -41,6 +41,8 @@ urlpatterns = [
     #数据库表基本展示界面
     path('tableShow/', viewsBasicTableShow.tableshow),
 
+    #树接口
+    path('getTree/', viewsStructureTree.getTree),
 
 
 
