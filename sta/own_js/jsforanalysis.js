@@ -1,3 +1,64 @@
+/*点击按钮显示供应商代码*/
+function btpmMFR() {
+    var pselect =  $('#selectPmodelDia option:selected').val();
+     $.ajax({
+            type: "POST",
+            url: '/getAllMFRCodes/',
+            data:{"pmodel":pselect},
+            dataType: "text",
+            success:function (json_str) {
+                $.parser.parse('#ddMFR');
+                $.parser.parse('#tbMFRcode');
+                var obj = JSON.parse(json_str);
+                    //alert(json_str);
+                 $('#MFRcodeListTable').datagrid({
+                            columns:[[
+                                {field:'CODE',title:'CODE',width:100,align:'center'},
+                                {field:'Name',title:'Name',width:100,align:'center'},
+                                {field:'Address',title:'Address',width:300,align:'center'},
+                            ]]
+                        });
+                 $('#MFRcodeListTable').datagrid('loadData', obj);
+
+
+
+
+            }
+
+        });
+
+}
+function showMFRCode() {
+    $.ajax({
+        type: "POST",
+        url: '/getAllMFRCodes/',
+        data:{"pmodel":'A320'},
+        dataType: "text",
+        success:function (json_str) {
+            $.parser.parse('#ddMFR');
+            $.parser.parse('#tbMFRcode');
+            var obj = JSON.parse(json_str);
+                //alert(json_str);
+             $('#MFRcodeListTable').datagrid({
+                        columns:[[
+                            {field:'CODE',title:'CODE',width:100,align:'center'},
+                            {field:'Name',title:'Name',width:100,align:'center'},
+                            {field:'Address',title:'Address',width:300,align:'center'},
+                        ]]
+                    });
+             $('#MFRcodeListTable').datagrid('loadData', obj);
+
+             $('#ddMFR').dialog({
+                            closed:false,
+                         modal: true
+                    });
+
+
+        }
+
+    });
+
+}
 /*******图一**********************************************/
 var dom = document.getElementById("esspie");
 var myesspie = echarts.init(dom);
@@ -449,6 +510,277 @@ function spcAnaBt()
                         data: data_pie,
                     }]
                 });
+         }
+     });
+
+}
+/*******图六*********************************************/
+var domSPCESS = document.getElementById("SPCESShis");
+var mySPCESS = echarts.init(domSPCESS);
+var appspcess = {};
+optionspcess = null;
+optionspcess = {
+    title : {
+        text: 'LRU按照SPC/ESS属性的分布情况',
+        subtext: '空客A320neo',
+        x:'center'
+    },
+    legend: {
+        orient: 'vertical',
+        right:'right',
+        data: ['SPC=1','SPC=2','SPC=6']
+    },
+    tooltip: {},
+    dataset: {
+        source: [
+            ['ESS=1',103, 427, 127],
+            ['ESS=2', 205, 587, 210],
+            ['ESS=3', 295, 377, 198],
+        ]
+    },
+    xAxis: {type: 'category'},
+    yAxis: {},
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {
+            name: 'SPC=1',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        },
+        {
+            name: 'SPC=2',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        },
+        {
+            name: 'SPC=6',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        }
+    ]
+};
+;
+if (optionspcess && typeof optionspcess === "object") {
+    mySPCESS.setOption(optionspcess, true);
+}
+//开始分析图6
+function SPCESSAnaBt()
+{
+    var pselect =  $('#selectPmodelSPCESS option:selected').val();
+    //alert(pselect);
+     $.ajax({
+         type: "POST",
+         url: '/getSPCESSNumbers/',
+         data: {"pmodel": pselect},
+         dataType: "text",
+         success:function (json) {
+             //alert(json);
+             var data_pie = JSON.parse(json);
+             mySPCESS.setOption({
+                 title : {
+                      subtext: '机型' + pselect,
+                 },
+                 dataset: {
+                    source: data_pie,
+                },
+             });
+         }
+     });
+
+}
+
+/*******图七*********************************************/
+var domATASPC = document.getElementById("ataspchis");
+var myATASPC = echarts.init(domATASPC);
+var appataspc = {};
+optionataspc = null;
+optionataspc = {
+    title : {
+        text: 'LRU备件类别在典型章节的分布',
+        subtext: '空客A320neo',
+        x:'center'
+    },
+    legend: {
+        orient: 'vertical',
+        right:'right',
+        data: ['SPC=1','SPC=2','SPC=6']
+    },
+    tooltip: {},
+    dataset: {
+        source: [
+            ['ATA=28',17, 97, 12],
+            ['ATA=32', 14, 173, 13],
+            ['ATA=34', 31, 53, 5],
+        ]
+    },
+    xAxis: {type: 'category'},
+    yAxis: {},
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {
+            name: 'SPC=1',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        },
+        {
+            name: 'SPC=2',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        },
+        {
+            name: 'SPC=6',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        }
+    ]
+};
+;
+if (optionataspc && typeof optionataspc === "object") {
+    myATASPC.setOption(optionataspc, true);
+}
+//开始分析图7
+function ataspcAnaBt()
+{
+    var pselect =  $('#selectPmodelATASPC option:selected').val();
+    //alert(pselect);
+     $.ajax({
+         type: "POST",
+         url: '/getATASPCNumbers/',
+         data: {"pmodel": pselect},
+         dataType: "text",
+         success:function (json) {
+             //alert(json);
+             var data_pie = JSON.parse(json);
+             myATASPC.setOption({
+                 title : {
+                      subtext: '机型' + pselect,
+                 },
+                 dataset: {
+                    source: data_pie,
+                },
+             });
+         }
+     });
+
+}
+/*******图八*********************************************/
+var domATA2ESS = document.getElementById("ATA2ESShis");
+var myATA2ESS = echarts.init(domATA2ESS);
+var appata2ess = {};
+optionata2ess = null;
+optionata2ess = {
+    title : {
+        text: '签派可靠性类别在典型章节的分布',
+        subtext: '空客A320neo',
+        x:'center'
+    },
+    legend: {
+        orient: 'vertical',
+        right:'right',
+        data: ['ESS=1','ESS=2','ESS=3']
+    },
+    tooltip: {},
+    dataset: {
+        source: [
+            ['ATA=28', 50, 67, 9],
+            ['ATA=32', 165, 29, 6],
+            ['ATA=34', 13, 73, 3],
+        ]
+    },
+    xAxis: {type: 'category'},
+    yAxis: {},
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {
+            name: 'ESS=1',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        },
+        {
+            name: 'ESS=2',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        },
+        {
+            name: 'ESS=3',
+            type: 'bar',
+            label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+            },
+        }
+    ]
+};
+;
+if (optionata2ess && typeof optionata2ess === "object") {
+    myATA2ESS.setOption(optionata2ess, true);
+}
+//开始分析图8
+function ATA2ESSAnaBt()
+{
+    var pselect =  $('#selectPmodelATA2ESS option:selected').val();
+    //alert(pselect);
+     $.ajax({
+         type: "POST",
+         url: '/getATA2ESSNumbers/',
+         data: {"pmodel": pselect},
+         dataType: "text",
+         success:function (json) {
+             //alert(json);
+             var data_pie = JSON.parse(json);
+             myATA2ESS.setOption({
+                 title : {
+                      subtext: '机型' + pselect,
+                 },
+                 dataset: {
+                    source: data_pie,
+                },
+             });
          }
      });
 

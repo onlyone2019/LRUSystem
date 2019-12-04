@@ -48,51 +48,43 @@
 		/>
 		<link href="/static/assets/css/style.css" rel="stylesheet" />
 		<!-- <link rel="stylesheet" href="/static/vue/css/element-ui.css" /> -->
-		<!--树形菜单-->
-		<link href="/static/assets/css/font-awesome.min.css" rel="stylesheet" />
 
 
-		<!-- <script src="/static/vue/js/element-ui.js"></script> -->
-		<!-- <script src="/static/vue/js/vue.js"></script> -->
-		<script src="/static/assets/js/echarts.min.js"></script>
 	</head>
 
 	<body>
 		<div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
 			<div class="nano">
 				<div class="nano-content">
-					<ul>
-						{% for row in node_list %}
-						<li class="active">
-							<a class="sidebar-sub-toggle"
-								><i class="ti-home"></i> {{row.name}}
-								<span class="sidebar-collapse-icon ti-angle-down"></span
-							></a>
-							<ul>
-								{% for row_son in row.child %}
-								<li class="active">
-									<a class="sidebar-sub-toggle"
-										>{{ row_son.name }}<span
-											class="sidebar-collapse-icon ti-angle-down"
-										></span
-									></a>
-									<ul>
-										{% for row_son_son in row_son.child %}
-										<li
-											onclick="updateTree('{{ row_son.name }}', '{{ row_son_son.name }}')"
-										>
-											<a class="getPnrsli" id="{{ row_son_son.id }}"
-												>{{ row_son_son.name }}</a
-											>
-										</li>
-										{% endfor %}
-									</ul>
-								</li>
-								{% endfor %}
-							</ul>
-						</li>
-						{% endfor %}
-					</ul>
+					 <ul>
+                        <li class="active">
+                            <a class="sidebar-sub-toggle"><i class="ti-home"></i> 空客 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                            <ul>
+                                <li class="active">
+                                    <a class="sidebar-sub-toggle"><i class="glyphicon glyphicon-plane"></i> A320 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                                    <ul>
+                                        <li><a class="changePdf" id="A320cover">封面</a></li>
+                                        <li><a class="changePdf" id="A320introduction">Introduction</a></li>
+                                        <li><a class="changePdf" id="A320parameter">Parameter</a></li>
+                                        <li><a class="changePdf" id="A320fleet">Fleet</a></li>
+                                        <li><a class="changePdf" id="A320icd">ICD</a></li>
+                                    </ul>
+                                </li>
+                                 <li class="active">
+                                    <a class="sidebar-sub-toggle"><i class="glyphicon glyphicon-plane"></i> A350 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                                    <ul>
+                                        <li><a class="changePdf" id="A350cover">封面</a></li>
+                                        <li><a class="changePdf" id="A350introduction">Introduction</a></li>
+                                        <li><a class="changePdf" id="A350parameter">Parameter</a></li>
+                                        <li><a class="changePdf" id="A350fleet">Fleet</a></li>
+                                        <li><a class="changePdf" id="A350icd">ICD</a></li>
+                                        <li><a class="changePdf" id="A350spl">SPL Investment</a></li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                     </ul>
 				</div>
 			</div>
 		</div>
@@ -563,74 +555,11 @@
 		</div>
 		<!-- END chat Sidebar-->
 		<div class="content-wrap">
-			<div class="main">
-				<div class="container-fluid">
+			<div id="mainshow" class="main">
+
 					<!-- /# main content -->
-					<div id="tree" style="width: 100%; height: calc(100vh - 70px)"></div>
-					<script>
-						let myChart = echarts.init(document.getElementById("tree"));
-						let data = [];
+                    <embed id="pdfshow" src="/static/pdf/A320cover.pdf" width="100%" height="700px">
 
-						let option = {
-							tooltip: {
-								trigger: "item",
-								triggerOn: "mousemove"
-							},
-							series: [
-								{
-									type: "tree",
-
-									data: [data],
-
-									top: "1%",
-									left: "7%",
-									bottom: "1%",
-									right: "20%",
-
-									symbolSize: 15,
-
-									label: {
-										normal: {
-											position: "left",
-											verticalAlign: "middle",
-											align: "right",
-											fontSize: 15
-										}
-									},
-
-									leaves: {
-										label: {
-											normal: {
-												position: "right",
-												verticalAlign: "middle",
-												align: "left"
-											}
-										}
-									},
-
-									expandAndCollapse: true,
-									animationDuration: 550,
-									animationDurationUpdate: 750
-								}
-							]
-						};
-
-						function updateTree(plane, ATAnum) {
-							// myChart.showLoading();
-							$.get(`/getTree?plane=${plane}&ATAnum=${ATAnum}`, data => {
-								// myChart.hideLoading();
-								option.series[0].data = [data];
-
-								// 不展开三级结点
-								echarts.util.each(data.children, function(datum, index) {
-									datum.collapsed = true;
-								});
-
-								myChart.setOption(option);
-							});
-						}
-					</script>
-				</div>
 				<!-- /# container-fluid -->
 			</div>
 			<!-- /# main -->
@@ -643,30 +572,8 @@
 		<script src="/static/assets/js/lib/sidebar.js"></script>
 		<!-- sidebar -->
 		<script src="/static/assets/js/lib/bootstrap.min.js"></script>
-		<!-- bootstrap -->
-		<script src="/static/assets/js/lib/mmc-common.js"></script>
-		<script src="/static/assets/js/lib/mmc-chat.js"></script>
-		<!--  Chart js -->
-		<script src="/static/assets/js/lib/chart-js/Chart.bundle.js"></script>
-		<script src="/static/assets/js/lib/chart-js/chartjs-init.js"></script>
-		<!-- // Chart js -->
-		<!--  Datamap -->
-		<script src="/static/assets/js/lib/datamap/d3.min.js"></script>
-		<script src="/static/assets/js/lib/datamap/topojson.js"></script>
-		<script src="/static/assets/js/lib/datamap/datamaps.world.min.js"></script>
-		<script src="/static/assets/js/lib/datamap/datamap-init.js"></script>
-		<script src="/static/assets/lib/lobipanel/js/lobipanel.js"></script>
-		<!-- // Datamap -->
-		<script src="/static/assets/js/scripts.js"></script>
-		<!-- scripit init-->
-		<script>
-			$(document).ready(function() {
-				$("#lobipanel-custom-control").lobiPanel({
-					reload: false,
-					close: false,
-					editTitle: false
-				});
-			});
-		</script>
+        <script src="/static/own_js/jsforopdfsearch.js"></script>
+
+
 	</body>
 </html>

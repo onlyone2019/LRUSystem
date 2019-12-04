@@ -30,6 +30,9 @@
     <link href="/static/assets/css/style.css" rel="stylesheet">
     <script src="/static/assets/js/bootstrap-select.js"></script>
     <script src="/static/assets/js/echarts.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/static/easyui/themes/icon.css">
     <script type="text/javascript">
         var comboxPmodeData
         //初始化pie的combox
@@ -39,10 +42,31 @@
         catch(err) {
             alert(初始化失败);
         }
+
+
     </script>
 </head>
 
 <body>
+
+{% comment %}dialog{% endcomment %}
+<div id="ddMFR" class="easyui-dialog" title="供应商信息" style="display:none;width:525px;height:600px;"
+    data-options="closed:true">
+    <table class="easyui-datagrid" style="display:inline-block;height:600px;width:500px;overflow: auto" id="MFRcodeListTable" toolbar="#tbMFRcode"  >
+    </table>
+                 <div id="tbMFRcode" >
+                    <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="$('#propretyListTable').datagrid('toExcel','pnrlist.xls')">导出</a>
+                    <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-print" plain="true" onclick="$('#propretyListTable').datagrid('print','DataGrid')">打印</a>
+                    <select id="selectPmodelDia" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                    </select>
+                    <button id="DiaBt"  onclick="btpmMFR()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>查询
+                    </button>
+                 </div>
+</div>
 
 <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
     <div class="nano">
@@ -51,7 +75,7 @@
                 <li class="active">
                     <a class="sidebar-sub-toggle"><i class="ti-home"></i> 总览 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
-                        <li><a href="/main/">Dashboard 1</a></li>
+                        <li><a href="/main/">总览</a></li>
 
                     </ul>
                 </li>
@@ -71,12 +95,13 @@
                     <a class="sidebar-sub-toggle"><i class="ti-layout-grid4-alt"></i> 信息查询 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
 
-                        <li><a href="/tableSearch/">信息查询</a></li>
+                        <li><a href="/tableSearch/">部件查询</a></li>
+                        <li><a href="/tableSearch/">手册查询</a></li>
                         <li><a href="/tableShow/">信息概览</a></li>
                         <li><a href="/structureTree/">结构总览</a></li>
                     </ul>
                 </li>
-                <li><a><i class="ti-close"></i> Logout</a></li>
+                <li><a href="/login/"><i class="ti-close"></i> 注销账户</a></li>
             </ul>
         </div>
     </div>
@@ -380,7 +405,7 @@
                 <div class="col-lg-8 p-0">
                     <div class="page-header">
                         <div class="page-title">
-                            <h1>Dashboard 1</h1>
+                            <h1>数据分析</h1>
                         </div>
                     </div>
                 </div>
@@ -388,8 +413,7 @@
                     <div class="page-header">
                         <div class="page-title">
                             <ol class="breadcrumb text-right">
-                                <li><a href="#">数据分析</a></li>
-                                <li class="active">Chart</li>
+                                <li><a href="javascript:void(0)" id="MFRCOde" onclick="showMFRCode()">供应商代码</a></li>
                             </ol>
                         </div>
                     </div>
@@ -462,7 +486,6 @@
                     <div class="col-lg-6">
                         <div class="card alert">
                             <div class="card-header">
-                                <div class="card-header">
                                  选择机型
                                 <select id="selectPmodelATAESS" class="selectpicker" style="margin-left:6px;height: 35px">
                                   {% for pm in PModelname %}
@@ -514,23 +537,67 @@
                         <div class="card alert">
                             <div class="card-header">
                                 选择机型
-                                <select id="selectPmodelMFR2" class="selectpicker" style="margin-left:6px;height: 35px">
+                                <select id="selectPmodelSPCESS" class="selectpicker" style="margin-left:6px;height: 35px">
                                   {% for pm in PModelname %}
                                     <option>{{ pm.text }}</option>
                                   {% endfor %}
                                 </select>
-                                <button id="MFRBt2"  onclick="mfrAnaBt2()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                <button id="SPCESSBt"  onclick="SPCESSAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
                                     <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
                                 </button>
                             </div>
                             <div class="flot-container">
-                                <div id="MFRhistogram2" style="width:100%;height:275px;"></div>
+                                <div id="SPCESShis" style="width:100%;height:275px;"></div>
                             </div>
                         </div><!-- /# card -->
                     </div><!-- /# column -->
                 </div>
                  {% comment %}row3{% endcomment %}
+                {% comment %}row44{% endcomment %}
+                 <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                选择机型
+                                <select id="selectPmodelATASPC" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button id="ataspcBt"  onclick="ataspcAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
 
+
+                            </div>
+                            <div class="flot-container">
+                                <div id="ataspchis" style="width:100%;height:275px;"></div>
+                            </div>
+
+
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+
+                    <div class="col-lg-6">
+                        <div class="card alert">
+                            <div class="card-header">
+                                选择机型
+                                <select id="selectPmodelATA2ESS" class="selectpicker" style="margin-left:6px;height: 35px">
+                                  {% for pm in PModelname %}
+                                    <option>{{ pm.text }}</option>
+                                  {% endfor %}
+                                </select>
+                                <button id="ATA2ESSBt"  onclick="ATA2ESSAnaBt()" type="button" class="btn btn-primary" data-toggle="button" style="margin-left:6px;margin-right: 50px">
+                                    <span class="glyphicon glyphicon-search" style="padding-right: 4px"></span>开始分析
+                                </button>
+                            </div>
+                            <div class="flot-container">
+                                <div id="ATA2ESShis" style="width:100%;height:275px;"></div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div><!-- /# column -->
+                </div>
+                 {% comment %}row44{% endcomment %}
                 </div>
             <!-- /# main content -->Copyright &copy; 2019.Company name All rights reserved.中国民航大学;</a>
         </div><!-- /# container-fluid -->

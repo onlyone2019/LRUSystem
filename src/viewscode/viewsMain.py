@@ -11,6 +11,21 @@
 #================================================================
 from django.shortcuts import render
 
+from src.model.SingleConnection import MySQLSingle
+
 
 def main(request):
-    return render(request, 'main.html')
+    mysql_single, cu = MySQLSingle().getConCu()
+    cu.execute(
+        'select count(*) as anumber  from component ')
+    cu_comnumber = cu.fetchall()
+    cu.execute(
+        'select count(*) as anumber  from pmodel ')
+    cu_pmodelnumber = cu.fetchall()
+    cu.execute(
+        'select count(*) as anumber  from manufacturer ')
+    cu_mannumber = cu.fetchall()
+    cu.execute(
+        'select count(*) as anumber  from user ')
+    cu_usernumber = cu.fetchall()
+    return render(request, 'main.html',{'com':cu_comnumber[0]['anumber'],'pmo':cu_pmodelnumber[0]['anumber'],'man':cu_mannumber[0]['anumber'],'user':cu_usernumber[0]['anumber']})

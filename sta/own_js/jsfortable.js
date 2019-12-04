@@ -77,6 +77,31 @@ function addChildmenu()
             };
 
 }
+function  dialogshowPdf(data)
+{
+    if(!isEmpty(data.type))
+    {
+         //var pdfshow = document.getElementById("pdfshow");
+         var pdfpath = ('/static/pnrshow/' + data.type).toString();
+         //alert(pdfpath);
+         $('#sipdfshow').remove();
+         var emdiv = '<embed id="sipdfshow" src="'+pdfpath+'" width="100%" height="700px">';
+         $('#ddpdf').html(emdiv);
+         $('#sipdfshow').dialog({
+                        title: '部件图像',
+                         closed:false,
+                         modal: true
+         });
+    }
+
+}
+function  dialogpdf(value,row,index)
+{
+    if (value==null)
+        value='';
+    var strherf = '<a href="javascript:void(0)" id="PropertyControl" onclick="dialogshowPdf(this)" type='+value+'>'+value+'</a>';
+    return strherf;
+}
 /*左侧导航栏ajax获取右侧表格*/
 $(".getPnrsli").click(function(){
     /*alert( $(this).attr('id'));*/
@@ -92,7 +117,6 @@ $(".getPnrsli").click(function(){
                     /!*动态改变列*!/
                    $.parser.parse('#tb');
                    $('#pnrListTable').datagrid({
-
                         columns:[[
                            {field:'mername',title:'制造商',width:100,align:'center'},
                             {field:'pmodel',title:'机型',width:60,align:'center'},
@@ -119,7 +143,7 @@ $(".getPnrsli").click(function(){
                             {field:'FUN',title:'FUN',width:80,align:'center'},
                             {field:'LRU Name',title:'LRU Name',width:80,align:'center'},
                             {field:'Access',title:'Access',width:100,align:'center'},
-                            {field:'ZONE photos',title:'ZONE photos',width:60,align:'center'},
+                            {field:'ZONE photos',title:'ZONE photos',width:100,align:'center'},
                             {field:'Dimension',title:'Dimension',width:60,align:'center'},
                             {field:'Body photos',title:'Body photos',width:80,align:'center'},
                             {field:'Man hours',title:'Man hours',width:80,align:'center'},
@@ -129,6 +153,7 @@ $(".getPnrsli").click(function(){
                             {field:'NHA 1',title:'NHA 1',width:60,align:'center'},
                             {field:'NHA 2',title:'NHA 2',width:60,align:'center'},
                             {field:'Cpclassname',title:'Cpclassname',width:60,align:'center'},
+                            {field:'pdfPath',title:'查看具体图片',width:60,align:'center',formatter:dialogpdf},
                         ]]
                     });
 
@@ -234,6 +259,7 @@ function advSearch(){
                             {field:'NHA 1',title:'NHA 1',width:60,align:'center'},
                             {field:'NHA 2',title:'NHA 2',width:60,align:'center'},
                             {field:'Cpclassname',title:'Cpclassname',width:60,align:'center'},
+                              {field:'pdfPath',title:'查看具体图片',width:60,align:'center',formatter:dialogpdf},
                         ]]
                     });
 
@@ -293,6 +319,7 @@ function allSearch(){
                             {field:'NHA 1',title:'NHA 1',width:60,align:'center'},
                             {field:'NHA 2',title:'NHA 2',width:60,align:'center'},
                             {field:'Cpclassname',title:'Cpclassname',width:60,align:'center'},
+                               {field:'pdfPath',title:'查看具体图片',width:60,align:'center',formatter:dialogpdf},
                         ]]
                     });
 

@@ -15,20 +15,27 @@ Including another URLconf
 """
 from django.urls import path
 from LRUSystem import views
-from src.viewscode import viewsSearchInfo, viewsLogin, viewsMain, viewsAnalysis, viewsStructureTree, viewsBasicTableShow
+from src.viewscode import viewsSearchInfo, viewsLogin, viewsMain, viewsAnalysis, viewsStructureTree, \
+    viewsBasicTableShow, viewsPdfSearch
 
 urlpatterns = [
     #登陆界面
     path('login/', viewsLogin.login),
     #主界面
     path('main/', viewsMain.main),
+    #手册查询界面
+    path('pdfSearch/', viewsPdfSearch.pdfSearch),
     #分析界面
     path('chart/', viewsAnalysis.chart),
+    path('getAllMFRCodes/', viewsAnalysis.getAllMFRCodes),  # 获取供应商信息
     path('getEss/', viewsAnalysis.getEss),#ESS饼状图分析
     path('getMfrNumbers/', viewsAnalysis.getMfrNumbers),#MFR折线图与柱状图
     path('getATANumbers/', viewsAnalysis.getATANumbers),#ATA折线图与柱状图
     path('getATAESSNumbers/', viewsAnalysis.getATAESSNumbers),#ATAESS折线图与柱状图
     path('getSPC/', viewsAnalysis.getSPC),#SPC饼状图分析
+    path('getSPCESSNumbers/', viewsAnalysis.getSPCESSNumbers),
+    path('getATASPCNumbers/', viewsAnalysis.getATASPCNumbers),
+    path('getATA2ESSNumbers/', viewsAnalysis.getATA2ESSNumbers),
 
     #Pnr具体信息查找页面
     path('tableSearch/', viewsSearchInfo.searchInfo), #数据查找界面

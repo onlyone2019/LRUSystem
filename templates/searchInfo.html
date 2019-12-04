@@ -66,6 +66,10 @@
                     <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-print" plain="true" onclick="$('#propretyListTable').datagrid('print','DataGrid')">打印</a>
                  </div>
 </div>
+<div id="ddpdf" class="easyui-dialog" title="查看图片" style="display:none;width:525px;height:600px;"
+    data-options="resizable:true,closed:true">
+    <embed id="sipdfshow" src="/static/pnrshow/229.png" width="100%" height="700px">
+</div>
 {% comment %}模态对话框{% endcomment %}
 {% comment %}<div class="modal fade" id="dialogProper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -114,7 +118,7 @@
                     <ul>
                         {% for row_son in row.child %}
                             <li class="active">
-                                <a class="sidebar-sub-toggle">{{ row_son.name }}<span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                                <a class="sidebar-sub-toggle"><i class="glyphicon glyphicon-plane"></i>{{ row_son.name }}<span class="sidebar-collapse-icon ti-angle-down"></span></a>
                                 <ul>
                                     {% for row_son_son in row_son.child %}
                                         <li><a class="getPnrsli" id="{{ row_son_son.id }}">AtA：{{ row_son_son.name }}</a></li>
